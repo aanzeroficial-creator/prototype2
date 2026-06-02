@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perencanaan Jajan | Pintar Finansial</title>
+    <!-- Menghubungkan CSS -->
+    <link rel="stylesheet" href="../shared/css/global.css">
+    <link rel="stylesheet" href="css/student-style.css">
+    <link rel="stylesheet" href="../shared/css/chatbot.css">
+    <style>
+        /* Layout khusus halaman perencanaan menggunakan Grid */
+        .planning-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Dua kolom sejajar */
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        /* Responsif untuk layar HP */
+        @media (max-width: 768px) {
+            .planning-layout {
+                grid-template-columns: 1fr; /* Menjadi satu kolom */
+            }
+        }
+        
+        .planning-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        /* Desain Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #E0E0E0;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            margin-top: 5px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        /* Header Anggaran */
+        .budget-header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-teacher));
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        /* Daftar Belanjaan */
+        .expense-list {
+            list-style: none;
+            margin-bottom: 20px;
+            max-height: 250px;
+            overflow-y: auto; /* Bisa discroll jika daftar panjang */
+        }
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f8f9fa;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            align-items: center;
+            border-left: 5px solid var(--danger);
+        }
+        
+        /* Tombol Hapus */
+        .btn-delete {
+            background-color: transparent;
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        .btn-delete:hover {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        /* Kotak Ringkasan (Hasil Sisa Uang) */
+        .summary-box {
+            background: #E8F8F5; /* Hijau muda */
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+            border: 2px solid #A2D9CE;
+        }
+        .summary-box h3 { color: #117A65; }
+        .summary-box .amount {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+      Proyek Web Edukasi Literasi Finansial PGSD
+      Author: Aan Rifai (NIM: 2501050298, No. Absen: 28)
+      Universitas Negeri Semarang (UNNES)
+    -->
+    
+    <nav class="student-nav">
+        <div class="container nav-container">
+            <div class="logo">Pintar Finansial 👦👧</div>
+            <a href="index.html" class="btn btn-home">Kembali</a>
+        </div>
+    </nav>
+
+    <main class="container" style="margin-top: 40px;">
+        <header class="welcome-section text-center">
+            <h1>Perencanaan Uang Jajan 📝</h1>
+            <p>Ayo atur uang jajanmu supaya ada yang bisa ditabung!</p>
+        </header>
+
+        <div class="planning-layout">
+            <!-- ==========================================
+                 KOLOM KIRI: Input Uang & Daftar Rencana
+                 ========================================== -->
+            <div class="planning-card">
+                <h2>1. Berapa uang jajanmu hari ini?</h2>
+                <div class="form-group">
+                    <!-- Event input akan dideteksi oleh JS secara real-time -->
+                    <input type="number" id="inputUangJajan" class="form-control" placeholder="Contoh: 20000" min="0">
+                </div>
+
+                <hr style="margin: 30px 0; border: 1px dashed #ccc;">
+
+                <h2>2. Rencana Beli Apa Saja?</h2>
+                <form id="formPengeluaran">
+                    <div class="form-group">
+                        <label style="font-weight: 600;">Nama Jajanan / Barang:</label>
+                        <input type="text" id="namaPengeluaran" class="form-control" placeholder="Contoh: Es Teh" required>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-weight: 600;">Harganya berapa?</label>
+                        <input type="number" id="hargaPengeluaran" class="form-control" placeholder="Contoh: 3000" min="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-weight: 600;">Ini Kebutuhan atau Keinginan?</label>
+                        <select id="kategoriPengeluaran" class="form-control" required>
+                            <option value="">-- Pilih Jenis --</option>
+                            <option value="kebutuhan">Kebutuhan (Harus dibeli)</option>
+                            <option value="keinginan">Keinginan (Hanya pengen saja)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-student" style="width:100%;">Tambah ke Daftar ➕</button>
+                </form>
+            </div>
+
+            <!-- ==========================================
+                 KOLOM KANAN: Hasil Kalkulasi Real-time
+                 ========================================== -->
+            <div class="planning-card">
+                <!-- Tampilan Uang Jajan -->
+                <div class="budget-header">
+                    <h3>Uang Jajan Kamu:</h3>
+                    <h2 id="displayUangJajan">Rp 0</h2>
+                </div>
+
+                <!-- Daftar Belanjaan -->
+                <h3>Daftar Pengeluaran:</h3>
+                <ul id="expenseList" class="expense-list">
+                    <!-- Daftar pengeluaran akan muncul di sini via JavaScript -->
+                    <li style="text-align: center; color: #7f8c8d; padding: 10px;">Belum ada rencana jajan.</li>
+                </ul>
+
+                <!-- Tampilan Total Pengeluaran -->
+                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; border-top: 2px solid #eee; padding-top: 15px;">
+                    <span>Total Pengeluaran:</span>
+                    <span id="displayTotalPengeluaran" style="color: var(--danger);">Rp 0</span>
+                </div>
+
+                <!-- Tampilan Sisa Uang / Tabungan -->
+                <div class="summary-box">
+                    <h3>Sisa Uang Untuk Ditabung:</h3>
+                    <div class="amount" id="displaySisaUang">Rp 0</div>
+                    <p id="pesanMotivasi" style="font-weight: 500;">Ayo, masukkan data uang jajanmu dulu!</p>
+                </div>
+            </div>
+        </div>
+        <!-- Tambahan Tombol Kirim Laporan -->
+        <button id="btnKirimLaporan" style="width: 100%; max-width: 600px; margin: 0 auto; display: block; background-color: #2ECC71; color: white; border: none; border-radius: 20px; box-shadow: 0 8px 0 #27AE60; font-size: 1.5rem; padding: 20px; cursor: pointer; font-weight: bold; transition: all 0.1s; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Kirim Laporan ke Guru 📤</button>
+    </main>
+
+    <!-- Memuat Firebase SDK (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    
+    <!-- Memuat Script -->
+    <script src="../shared/js/firebase-db.js" defer></script>
+    <script src="../shared/js/utils.js" defer></script>
+    <script src="js/perencanaan.js" defer></script>
+    <!-- Script Chatbot -->
+    <script src="../shared/js/chatbot.js" defer></script>
+</body>
+</html>

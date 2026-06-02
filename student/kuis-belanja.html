@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Simulasi Belanja 2D</title>
+    <!-- Memuat CSS Global dan Spesifik Kuis -->
+    <link rel="stylesheet" href="../shared/css/global.css">
+    <link rel="stylesheet" href="css/kuis.css">
+    <link rel="stylesheet" href="../shared/css/chatbot.css">
+</head>
+<body>
+    <!-- 
+      Proyek Web Edukasi Literasi Finansial PGSD
+      Author: Aan Rifai (NIM: 2501050298, No. Absen: 28)
+      Universitas Negeri Semarang (UNNES)
+    -->
+    
+    <!-- OVERLAY ROTASI LAYAR KHUSUS MOBILE -->
+    <div id="rotateOverlay">
+        <div class="rotate-icon">📱</div>
+        <h2>Putar Layar HP Anda!</h2>
+        <p>Kuis belanja ini dirancang untuk dimainkan dalam mode miring (Landscape) agar lebih seru.</p>
+        <button id="btnForceLandscape" class="btn-rotate">Main Layar Penuh (Otomatis Miring)</button>
+    </div>
+
+    <!-- 1. TOP BAR (HEADER) -->
+    <header class="game-header">
+        <div class="header-left">
+            <a href="eksplorasi.html" class="btn-pause">⏸️ Kembali</a>
+        </div>
+        <div class="header-center">
+            <div class="timer">⏳ <span id="timerDisplay">01:00</span></div>
+            <div class="score">⭐ Skor: <span id="scoreDisplay">0</span></div>
+        </div>
+        <div class="header-right">
+            <!-- Ikon Nyawa/Kesempatan (Berupa jejeran ikon wajah) -->
+            <div class="lives" id="livesDisplay">
+                😀 😀 😀
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. AREA UTAMA (FLEXBOX: KIRI KE KANAN) -->
+    <main class="game-area">
+        
+        <!-- ===============================
+             KIRI: Karakter Pembeli
+             =============================== -->
+        <div class="area-kiri">
+            <!-- Karakter Siswa (Pembeli) -->
+            <div class="placeholder-character pembeli" style="background: transparent; box-shadow: none;">
+                <img src="aset%20student/9.png" alt="Siswa" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <!-- Keranjang belanja -->
+            <div class="placeholder-keranjang" style="background: transparent; box-shadow: none;">
+                <img src="aset%20student/keranjang%20belanja.png" alt="Keranjang" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+        </div>
+
+        <!-- ===============================
+             TENGAH: Dompet Interaktif
+             =============================== -->
+        <div class="area-tengah">
+
+
+            <!-- Kontainer Dompet dengan Aset Gambar -->
+            <div class="dompet-container" style="background: transparent; border: none; box-shadow: none; padding: 0; position: relative; display: inline-block;">
+                
+                <!-- Gambar Aset Dompet (Base) -->
+                <img src="aset%20student/dompet.png" alt="Dompet" style="width: 35vw; max-width: 400px; display: block; position: relative; z-index: 2;">
+
+                <!-- Deretan Uang Kertas (Menyebar seperti kipas) - DI DEPAN DOMPET -->
+                <div class="uang-kertas-container" style="position: absolute; top: 5%; left: 50%; transform: translateX(-50%); z-index: 3; margin: 0; width: 100%;">
+                    <button class="uang-btn kertas k-2k" data-nominal="2000">2.000</button>
+                    <button class="uang-btn kertas k-5k" data-nominal="5000">5.000</button>
+                    <button class="uang-btn kertas k-10k" data-nominal="10000">10.000</button>
+                    <button class="uang-btn kertas k-20k" data-nominal="20000">20.000</button>
+                    <button class="uang-btn kertas k-50k" data-nominal="50000">50.000</button>
+                    <button class="uang-btn kertas k-100k" data-nominal="100000">100.000</button>
+                </div>
+
+                <!-- Deretan Uang Koin (Jejeran bawah) - DI DEPAN DOMPET -->
+                <div class="uang-koin-container" style="position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); z-index: 3; margin: 0; width: 100%;">
+                    <button class="uang-btn koin" data-nominal="100">100</button>
+                    <button class="uang-btn koin" data-nominal="200">200</button>
+                    <button class="uang-btn koin" data-nominal="500">500</button>
+                    <button class="uang-btn koin" data-nominal="1000">1.000</button>
+                </div>
+            </div>
+            
+            <!-- Tombol Batal/Ulang -->
+            <button id="btnResetUang" class="btn-action reset-uang" style="margin-top: 10px; z-index: 4;">Batal / Ulangi Hitung Uang</button>
+        </div>
+
+        <!-- ===============================
+             KANAN: Kasir dan Mesin Kasir
+             =============================== -->
+        <div class="area-kanan">
+            <!-- Balon Kata (Speech Bubble) untuk Harga Barang -->
+            <div class="speech-bubble">
+                <p id="bubbleText">Memuat Barang...</p>
+                <div class="bubble-arrow"></div>
+            </div>
+            
+            <!-- Karakter Kasir -->
+            <div class="placeholder-character kasir" style="background: transparent; box-shadow: none;">
+                <img src="aset%20student/8.png" alt="Kasir" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            
+            <!-- Mesin Kasir di depan karakter kasir -->
+            <div class="mesin-kasir">
+                <div class="layar-digital">
+                    <span class="currency">Rp</span>
+                    <span id="mesinKasirDisplay">0</span>
+                </div>
+                <!-- Tombol Bayar -->
+                <button id="btnBayar" class="btn-action btn-bayar">BAYAR SEKARANG</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ===============================
+         OVERLAY POPUP (Pesan Error/Sukses)
+         =============================== -->
+    <div id="gameOverlay" class="game-overlay hidden">
+        <div class="overlay-box" id="overlayBox">
+            <h2 id="overlayTitle">Pesan</h2>
+            <p id="overlayMessage">Deskripsi</p>
+            <button id="btnLanjut" class="btn-action">Lanjut</button>
+        </div>
+    </div>
+
+    <!-- Script JavaScript -->
+    <!-- Memuat Firebase SDK (Compat Version untuk mendukung file://) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    
+    <!-- Memuat Utils untuk fungsi formatRupiah dan shuffleArray -->
+    <script src="../shared/js/utils.js" defer></script>
+    <script src="../shared/js/firebase-db.js" defer></script>
+    <script src="../shared/js/presence-tracker.js" defer></script>
+    <!-- Memuat logika Kuis spesifik -->
+    <script src="js/kuis.js" defer></script>
+    <!-- Script Chatbot -->
+    <script src="../shared/js/chatbot.js" defer></script>
+</body>
+</html>

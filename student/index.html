@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pintar Finansial | Dashboard Siswa</title>
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="../shared/css/global.css">
+    <!-- CSS Khusus Siswa -->
+    <link rel="stylesheet" href="css/student-style.css">
+    <!-- CSS Chatbot -->
+    <link rel="stylesheet" href="../shared/css/chatbot.css">
+</head>
+<body>
+    <!-- 
+      Proyek Web Edukasi Literasi Finansial PGSD
+      Author: Aan Rifai (NIM: 2501050298, No. Absen: 28)
+      Universitas Negeri Semarang (UNNES)
+    -->
+    
+    <!-- Navigasi Atas -->
+    <nav class="student-nav">
+        <div class="container nav-container">
+            <div class="logo">Saku Pintar</div>
+            <a href="../index.html" class="btn btn-home">Kembali ke Portal</a>
+        </div>
+    </nav>
+
+    <!-- Konten Utama -->
+    <main class="container">
+        <!-- Area Sambutan -->
+        <header class="welcome-section text-center">
+            <h1>Halo Teman-Teman!</h1>  <!-- siapa tahu mau ada icon -->
+            <p>Mari belajar tentang uang dan cara mengaturnya!</p>
+        </header>
+
+        <!-- Grid Menu -->
+        <div class="menu-grid">
+            <!-- Menu 1: Mengenal Uang -->
+            <a href="mengenal-uang.html" class="menu-card card-mengenal">
+                <div class="menu-icon">💵</div>
+                <h2>Mengenal Uang</h2>
+                <p>Ayo tonton video dan lihat macam-macam uang Rupiah!</p>
+            </a>
+            
+            <!-- Menu 2: Eksplorasi & Kuis (Akan dibuat di fase berikutnya) -->
+            <a href="eksplorasi.html" class="menu-card card-eksplorasi">
+                <div class="menu-icon">📸</div>
+                <h2>Eksplorasi & Kuis</h2>
+                <p>Foto barang sekitarmu dan main kuis belanja yuk!</p>
+            </a>
+
+            <!-- Menu 3: Perencanaan (Akan dibuat di fase berikutnya) -->
+            <a href="perencanaan.html" class="menu-card card-perencanaan">
+                <div class="menu-icon">📝</div>
+                <h2>Perencanaan Jajan</h2>
+                <p>Simulasi atur uang jajanmu supaya bisa menabung!</p>
+            </a>
+
+            <!-- Menu 4: Detektor Barang (Kebutuhan vs Keinginan) -->
+            <a href="detektor.html" class="menu-card" style="background: linear-gradient(135deg, #1ABC9C 0%, #16A085 100%);">
+                <div class="menu-icon">🔍</div>
+                <h2>Detektor Barang</h2>
+                <p>Cari tahu apakah barang incaranmu itu Kebutuhan atau Keinginan!</p>
+            </a>
+        </div>
+    </main>
+    
+    <script src="../shared/js/utils.js"></script>
+    <script src="js/student-main.js"></script>
+    
+    <!-- Memuat Firebase SDK & Tracker (Untuk Fitur Kehadiran LMS) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js" defer></script>
+    <script src="../shared/js/firebase-db.js" defer></script>
+    <script src="../shared/js/presence-tracker.js" defer></script>
+    
+    <!-- Script Chatbot -->
+    <script src="../shared/js/chatbot.js" defer></script>
+</body>
+</html>

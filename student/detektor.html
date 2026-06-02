@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Detektor: Kebutuhan vs Keinginan</title>
+    <!-- Memuat CSS Global dan Spesifik Detektor -->
+    <link rel="stylesheet" href="../shared/css/global.css">
+    <link rel="stylesheet" href="css/student-style.css">
+    <link rel="stylesheet" href="css/detektor.css">
+    <!-- Font Kustom -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 
+      Proyek Web Edukasi Literasi Finansial PGSD
+      Fitur: Detektor Kebutuhan vs Keinginan
+    -->
+
+    <!-- Navigasi -->
+    <nav class="student-nav">
+        <div class="container nav-container" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center; justify-content: space-between;">
+            <div class="logo" style="font-size: 1.5rem;">Robot Detektor 🔍</div>
+            <a href="index.html" class="btn btn-home" style="margin-left: auto;">Kembali ke Menu</a>
+        </div>
+    </nav>
+
+    <!-- Kontainer Utama -->
+    <div class="detektor-container">
+        
+        <div style="text-align: center; margin-bottom: 10px;">
+            <h1 style="font-family: 'Fredoka One', cursive; color: #2C3E50; font-size: 2.5rem; text-shadow: 2px 2px 0px white;">🔍 Mesin Analisis Barang</h1>
+            <p style="color: #34495E; font-size: 1.2rem;">Bantu aku mencari tahu apakah barang ini Kebutuhan atau Keinginan!</p>
+        </div>
+
+        <!-- Tombol Pilihan Mode -->
+        <div class="mode-selector">
+            <button class="btn-mode active" id="btnModeInstan">⚡ Mode Instan</button>
+            <button class="btn-mode" id="btnModeDetektif">🕵️ Mode Detektif</button>
+        </div>
+
+        <!-- KARTU 1: MODE INSTAN (Analisis Teks) -->
+        <div class="detector-card active" id="cardInstan">
+            <h2 class="card-title">Analisis Teks Cepat</h2>
+            <p class="card-subtitle">Ketik barang dan fungsinya, sistem akan memindai kata kuncinya.</p>
+            
+            <div class="input-group">
+                <label for="inputNamaBarang">Apa nama barangnya?</label>
+                <input type="text" id="inputNamaBarang" placeholder="Contoh: Sepatu Roda Baru" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="inputFungsiBarang">Untuk apa barang itu digunakan?</label>
+                <input type="text" id="inputFungsiBarang" placeholder="Contoh: Untuk main dan gaya sama teman-teman" autocomplete="off">
+            </div>
+
+            <button class="btn-analyze" id="btnProsesInstan">Analisis Sekarang! 🚀</button>
+
+            <!-- Tempat Hasil Analisis -->
+            <div id="hasilInstan" class="result-box">
+                <!-- Diisi oleh JS -->
+            </div>
+        </div>
+
+        <!-- KARTU 2: MODE DETEKTIF (Tanya Jawab Interaktif) -->
+        <div class="detector-card" id="cardDetektif">
+            <h2 class="card-title">Robot Detektif</h2>
+            <p class="card-subtitle">Mari kita berdiskusi sejenak sebelum memutuskan.</p>
+            
+            <!-- Layar Chat -->
+            <div class="chat-container" id="chatArea">
+                <!-- Pesan pembuka dari robot -->
+                <div class="chat-bubble chat-bot">
+                    Bip Bop! 🤖 Halo! Aku Robot Detektif. Sebutkan satu nama barang yang ingin kamu beli!
+                </div>
+            </div>
+            
+            <!-- Tempat Input / Tombol Respon -->
+            <div id="chatInputArea" style="display: flex; gap: 10px;">
+                <input type="text" id="chatInput" placeholder="Ketik nama barang di sini..." style="flex: 1; padding: 15px; border: 2px solid #BDC3C7; border-radius: 10px; font-size: 1.1rem;">
+                <button id="btnKirimChat" style="background: #3498DB; color: white; border: none; padding: 0 25px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem;">Kirim</button>
+            </div>
+            
+            <!-- Tombol Aksi Ya/Tidak (Disembunyikan pada awalnya) -->
+            <div class="chat-actions" id="chatActionArea" style="display: none;">
+                <button class="btn-chat-action" id="btnJawabYa">Tentu Saja (Ya)</button>
+                <button class="btn-chat-action" id="btnJawabTidak">Sebenarnya Tidak (Tidak)</button>
+            </div>
+            
+            <!-- Tombol Ulangi -->
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="btnUlangiDetektif" class="btn-chat-action" style="display: none; border-color: #E74C3C; color: #E74C3C;">Ulangi Diskusi 🔄</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script Utama -->
+    <script src="../shared/js/utils.js" defer></script>
+    <script src="js/detektor.js" defer></script>
+    
+    <!-- Memuat Firebase SDK & Tracker (Untuk Fitur Kehadiran LMS) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js" defer></script>
+    <script src="../shared/js/firebase-db.js" defer></script>
+    <script src="../shared/js/presence-tracker.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+/* 
+ * Proyek Web Edukasi Literasi Finansial PGSD
+ * Author: Aan Rifai (NIM: 2501050298, No. Absen: 28)
+ * Universitas Negeri Semarang (UNNES)
+ */
+
+body {
+    /* Latar belakang gaya game (Langit Biru Polkadot) */
+    background-color: #85C1E9;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.4) 3px, transparent 3px),
+                      radial-gradient(rgba(255, 255, 255, 0.4) 3px, transparent 3px);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigasi / HUD Game (Bukan bar kotak web) */
+.student-nav {
+    background-color: transparent;
+    color: white;
+    padding: 20px 0;
+    box-shadow: none;
+    position: relative;
+    z-index: 100;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: 700;
+    text-shadow: 3px 3px 0px var(--primary-color), 0 5px 10px rgba(0,0,0,0.3);
+    letter-spacing: 2px;
+}
+
+.btn-home {
+    background-color: #E74C3C;
+    color: white;
+    padding: 10px 25px;
+    font-size: 1.1rem;
+    border-radius: 20px;
+    box-shadow: 0 6px 0 #C0392B;
+    transition: all 0.1s;
+}
+
+.btn-home:hover {
+    background-color: #E74C3C;
+    color: white;
+    transform: translateY(2px);
+    box-shadow: 0 4px 0 #C0392B;
+}
+.btn-home:active {
+    transform: translateY(6px) scale(0.95);
+    box-shadow: 0 0 0 #C0392B;
+}
+
+/* Bagian Sambutan Game */
+.welcome-section {
+    margin: 30px 0 40px 0;
+}
+
+.welcome-section h1 {
+    color: white;
+    font-size: 3.8rem;
+    margin-bottom: 10px;
+    text-shadow: 4px 4px 0px var(--primary-teacher), 0 10px 20px rgba(0,0,0,0.3);
+    animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.welcome-section p {
+    font-size: 1.4rem;
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+}
+
+/* Grid Menu Utama - Responsif dengan Grid CSS */
+.menu-grid {
+    display: grid;
+    /* Membuat kolom menyesuaikan ukuran layar secara otomatis */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+/* Kartu Menu */
+.menu-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-dark);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    border: 5px solid transparent; /* Border transparan yang akan berwarna saat di-hover */
+}
+
+/* Animasi saat kartu disorot mouse */
+.menu-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+
+.menu-icon {
+    font-size: 5rem;
+    margin-bottom: 20px;
+}
+
+.menu-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+/* Warna border spesifik tiap menu saat disorot */
+.card-mengenal:hover { border-color: var(--primary-color); }
+.card-eksplorasi:hover { border-color: var(--secondary-color); }
+.card-perencanaan:hover { border-color: var(--warning); }
+
+/* Penyesuaian Mobile untuk Dashboard Siswa */
+@media (max-width: 768px) {
+    .welcome-section h1 {
+        font-size: 2.2rem;
+    }
+    .welcome-section p {
+        font-size: 1.1rem;
+    }
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    .menu-card {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .menu-icon {
+        font-size: 3.5rem;
+        margin-bottom: 10px;
+    }
+    .menu-card h2 {
+        font-size: 1.4rem;
+    }
+    .menu-card p {
+        font-size: 0.95rem;
+    }
+}
+
+/* ========================================================
+   Style Khusus Halaman "Mengenal Uang" (Video & Flip Card) 
+   ======================================================== */
+
+.video-section {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Container video responsif */
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* Rasio Aspek 16:9 untuk YouTube */
+    height: 0;
+    overflow: hidden;
+    border-radius: 15px;
+    background-color: #000;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Grid untuk Kartu 3D */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+/* Container kartu yang memfasilitasi efek 3D (perspective) */
+.flip-card {
+    background-color: transparent;
+    width: 100%;
+    height: 350px;
+    perspective: 1000px; /* Menentukan kedalaman efek 3D */
+    cursor: pointer;
+}
+
+/* Elemen dalam kartu yang akan diputar */
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1); /* Animasi putaran yang halus */
+    transform-style: preserve-3d;
+}
+
+/* Jika kartu memiliki class 'flipped', putar 180 derajat */
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Sisi depan dan belakang kartu */
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Menyembunyikan bagian belakang untuk Safari */
+    backface-visibility: hidden;         /* Menyembunyikan sisi belakang saat kartu diputar */
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Gaya khusus Sisi Depan */
+.flip-card-front {
+    background-color: var(--accent-color);
+    color: var(--text-dark);
+}
+
+.flip-card-front h3 {
+    font-size: 2.5rem;
+    margin-top: 20px;
+}
+
+.flip-card-front .money-icon {
+    font-size: 4rem;
+}
+
+/* Gaya khusus Sisi Belakang */
+.flip-card-back {
+    background-color: var(--secondary-color);
+    color: white;
+    transform: rotateY(180deg); /* Sisi ini sudah diputar 180 derajat sejak awal */
+}
+
+.flip-card-back h3 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+    padding-bottom: 10px;
+}
+
+.flip-card-back p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+}

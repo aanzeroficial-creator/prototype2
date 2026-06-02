@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mengenal Uang | Pintar Finansial</title>
+    <!-- Menghubungkan CSS -->
+    <link rel="stylesheet" href="../shared/css/global.css">
+    <link rel="stylesheet" href="css/student-style.css">
+</head>
+<body>
+    
+    <nav class="student-nav">
+        <div class="container nav-container">
+            <div class="logo">Pintar Finansial 👦👧</div>
+            <a href="index.html" class="btn btn-home">Kembali</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header class="welcome-section text-center">
+            <h1>Mengenal Uang Rupiah 💵</h1>
+            <p>Tonton video ini dulu yuk, lalu balik kartu di bawahnya!</p>
+        </header>
+
+        <!-- Halaman 1: Video Materi -->
+        <section class="video-section">
+            <div class="video-container">
+                <!-- Simulasi video materi. Bisa diganti dengan URL YouTube riil materi Anda -->
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video Edukasi Uang" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <div class="text-center" style="margin-top: 40px;">
+                <a href="mengenal-uang-kartu.html" class="btn btn-student" style="font-size: 1.5rem; padding: 20px 40px; background-color: #2ECC71; box-shadow: 0 8px 0 #27AE60;">Lanjut ke Kartu Uang ➡️</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Memuat Firebase SDK & Tracker (Untuk Fitur Kehadiran LMS & Log) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js" defer></script>
+    <script src="../shared/js/firebase-db.js" defer></script>
+    <script src="../shared/js/presence-tracker.js" defer></script>
+
+    <!-- Memuat file JavaScript -->
+    <script src="../shared/js/utils.js" defer></script>
+    
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tunggu sebentar agar firebase-db.js termuat penuh
+            setTimeout(() => {
+                if (typeof logActivity === 'function') {
+                    logActivity('📚 Mulai mempelajari materi "Mengenal Uang"');
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
