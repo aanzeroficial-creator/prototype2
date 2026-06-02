@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk Kelas | Pintar Finansial</title>
+    <link rel="stylesheet" href="shared/css/global.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #85C1E9;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.4) 4px, transparent 4px),
+                              radial-gradient(rgba(255, 255, 255, 0.4) 4px, transparent 4px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            overflow: hidden;
+            font-family: var(--font-student);
+            margin: 0;
+        }
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border: 8px solid white;
+            animation: popUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popUp {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .login-card h1 {
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 0px #FFE66D;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+        }
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 3px solid #E0E0E0;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        .form-control:focus {
+            border-color: var(--accent-color);
+            outline: none;
+        }
+        .btn-login {
+            background-color: var(--accent-color);
+            color: var(--text-dark);
+            font-size: 1.4rem;
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 6px 0 #F39C12;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.1s;
+            margin-top: 10px;
+        }
+        .btn-login:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #F39C12;
+        }
+        .btn-back {
+            display: block;
+            margin-top: 25px;
+            color: #7F8C8D;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h1>Masuk Kelas 🎒</h1>
+        <form id="loginSiswaForm">
+            <div class="form-group">
+                <label for="namaSiswa">Nama Panggilan:</label>
+                <input type="text" id="namaSiswa" class="form-control" placeholder="Contoh: Budi" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="kelasSiswa">Kelas:</label>
+                <input type="text" id="kelasSiswa" class="form-control" placeholder="Contoh: 3A" required autocomplete="off">
+            </div>
+            <button type="submit" class="btn-login">Mulai Bermain!</button>
+        </form>
+        <a href="index.html" class="btn-back">Kembali ke Portal</a>
+    </div>
+
+    <!-- Script Utama (tanpa utils dulu agar tidak kena redirect global) -->
+    <script>
+        document.getElementById('loginSiswaForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nama = document.getElementById('namaSiswa').value.trim();
+            const kelas = document.getElementById('kelasSiswa').value.trim();
+            
+            if(nama && kelas) {
+                // Mainkan suara sukses jika ada
+                const sfxSave = new Audio('klik semua.mp3');
+                sfxSave.play().catch(err=>{});
+
+                // Simpan ke Session Storage
+                sessionStorage.setItem('siswaAuth', JSON.stringify({ nama, kelas }));
+                
+                // Pindah ke dashboard siswa
+                setTimeout(() => {
+                    window.location.href = 'student/index.html';
+                }, 300);
+            }
+        });
+    </script>
+</body>
+</html>

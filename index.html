@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pintar Finansial | Portal Utama</title>
+    <!-- Menghubungkan CSS global -->
+    <link rel="stylesheet" href="shared/css/global.css">
+    <style>
+        /* Styling khusus halaman landing portal bergaya GAME */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            /* Background Game-like Polkadot */
+            background-color: #F1C40F;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.4) 4px, transparent 4px),
+                              radial-gradient(rgba(255, 255, 255, 0.4) 4px, transparent 4px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            overflow: hidden;
+        }
+        .portal-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            border: 8px solid white;
+        }
+        .portal-card h1 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 3.5rem;
+            text-shadow: 3px 3px 0px #FFE66D;
+            animation: bounce 2s infinite ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .portal-card p {
+            color: var(--text-dark);
+            margin-bottom: 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .portal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        /* Tombol akses Siswa - bergaya 3D Game */
+        .btn-student {
+            background-color: var(--accent-color);
+            color: var(--text-dark);
+            font-size: 1.4rem;
+            padding: 20px;
+            border-radius: 30px;
+            box-shadow: 0 8px 0 #F39C12;
+            transition: all 0.1s;
+        }
+        .btn-student:active {
+            transform: translateY(8px) scale(0.98);
+            box-shadow: 0 0 0 #F39C12;
+        }
+        /* Tombol akses Guru - terlihat lebih profesional tapi tetap 3D */
+        .btn-teacher {
+            background-color: var(--primary-teacher);
+            color: white;
+            font-family: var(--font-teacher);
+            border-radius: 30px;
+            box-shadow: 0 6px 0 #1A252F;
+            transition: all 0.1s;
+        }
+        .btn-teacher:active {
+            transform: translateY(6px) scale(0.98);
+            box-shadow: 0 0 0 #1A252F;
+        }
+
+        /* Penyesuaian Responsif untuk Mobile */
+        @media (max-width: 768px) {
+            .portal-card {
+                padding: 30px 20px;
+            }
+            .portal-card h1 {
+                font-size: 2.2rem;
+            }
+            .portal-card p {
+                font-size: 1rem;
+                margin-bottom: 25px;
+            }
+            .btn-student {
+                font-size: 1.1rem;
+                padding: 15px;
+            }
+            .btn-teacher {
+                font-size: 1rem;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+   
+    
+    <div class="portal-card">
+        <h1>Saku Pintar</h1>  <!-- ada ikon or not pikir nanti -->
+        <p>Portal edukasi interaktif untuk belajar mengatur uang dengan cara yang menyenangkan!</p>
+        
+        <div class="portal-options">
+            <!-- Tautan menuju antarmuka siswa -->
+            <a href="login-siswa.html" class="btn btn-student">Masuk sebagai Siswa</a>
+            <!-- Tautan menuju dashboard guru -->
+            <a href="login-guru.html" class="btn btn-teacher">Masuk Dashboard Guru</a>
+        </div>
+    </div>
+    
+    <!-- Memuat Utils untuk BGM dan Sound Effect Global -->
+    <script src="shared/js/utils.js"></script>
+</body>
+</html>

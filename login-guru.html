@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Guru | Pintar Finansial</title>
+    <link rel="stylesheet" href="shared/css/global.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: var(--primary-teacher);
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 2px, transparent 2px);
+            background-size: 30px 30px;
+            font-family: var(--font-teacher);
+            margin: 0;
+        }
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: popUp 0.4s ease-out;
+        }
+        @keyframes popUp {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .login-card h1 {
+            color: var(--primary-teacher);
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #BDC3C7;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        .form-control:focus {
+            border-color: var(--primary-teacher);
+            outline: none;
+        }
+        .btn-login {
+            background-color: var(--primary-teacher);
+            color: white;
+            font-size: 1.2rem;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 0 #1A252F;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.1s;
+        }
+        .btn-login:active {
+            transform: translateY(5px);
+            box-shadow: 0 0 0 #1A252F;
+        }
+        .btn-back {
+            display: block;
+            margin-top: 25px;
+            color: #7F8C8D;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .error-msg {
+            color: #E74C3C;
+            background: #FADBD8;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            display: none;
+            border: 2px solid #E74C3C;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h1>Dashboard Guru 👨‍🏫</h1>
+        <p id="errorMsg" class="error-msg">Email atau Password Salah!</p>
+        <form id="loginGuruForm">
+            <div class="form-group">
+                <label for="emailGuru">Email:</label>
+                <input type="email" id="emailGuru" class="form-control" placeholder="Masukkan Email Guru..." required>
+            </div>
+            <div class="form-group">
+                <label for="passGuru">Password:</label>
+                <input type="password" id="passGuru" class="form-control" placeholder="********" required>
+            </div>
+            <button type="submit" class="btn-login">Masuk Dashboard</button>
+        </form>
+        <a href="index.html" class="btn-back"> Kembali ke Portal</a>
+    </div>
+
+    <script>
+        document.getElementById('loginGuruForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('emailGuru').value;
+            const pass = document.getElementById('passGuru').value;
+            
+            // Validasi statis sesuai permintaan (admin@guru.com / gurukelas)
+            if(email === 'admin@guru.com' && pass === 'gurukelas') {
+                sessionStorage.setItem('guruAuth', 'true');
+                window.location.href = 'teacher/index.html';
+            } else {
+                const sfxErr = new Audio('klik semua.mp3');
+                sfxErr.play().catch(err=>{});
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
