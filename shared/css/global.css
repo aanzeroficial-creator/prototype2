@@ -1,0 +1,92 @@
+/* 
+ * Proyek Web Edukasi Literasi Finansial PGSD
+ * Author: Aan Rifai (NIM: 2501050298, No. Absen: 28)
+ * Universitas Negeri Semarang (UNNES)
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Warna cerah untuk website siswa - memberikan kesan ceria dan ramah anak */
+  --primary-color: #FF6B6B;      /* Merah cerah / pink */
+  --secondary-color: #4ECDC4;    /* Tosca / Cyan */
+  --accent-color: #FFE66D;       /* Kuning ceria */
+  --background-student: #F7FFF7; /* Putih kehijauan pucat untuk latar belakang */
+  
+  /* Warna profesional untuk website guru */
+  --primary-teacher: #2C3E50;    /* Biru gelap */
+  --secondary-teacher: #34495E;
+  --accent-teacher: #3498DB;     /* Biru terang */
+  --background-teacher: #ECF0F1; /* Abu-abu sangat muda */
+  
+  /* Warna netral dan status */
+  --text-dark: #2D3436;
+  --text-light: #FFFFFF;
+  --success: #2ECC71;            /* Hijau untuk jawaban benar/sukses */
+  --danger: #E74C3C;             /* Merah untuk peringatan/salah */
+  --warning: #F1C40F;            /* Kuning peringatan */
+
+  /* Font: Fredoka sangat bulat dan cocok untuk anak, Inter profesional untuk guru */
+  --font-student: 'Fredoka', sans-serif;
+  --font-teacher: 'Inter', sans-serif;
+
+  /* Efek bayangan & Transisi (Animasi mikro) */
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 8px 15px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 15px 25px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s ease;
+}
+
+/* Reset Dasar agar tampilan konsisten di semua browser */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* Default ke tema siswa */
+  font-family: var(--font-student);
+  color: var(--text-dark);
+  background-color: var(--background-student);
+  line-height: 1.6;
+}
+
+/* Utilitas Global */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Tombol Global dengan efek interaktif (Micro-animation) */
+.btn {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.1rem;
+  font-family: inherit;
+  transition: var(--transition);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:hover {
+  transform: translateY(-3px) scale(1.02); /* Animasi membesar dan naik saat disentuh */
+  box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+  transform: translateY(1px) scale(0.98);  /* Efek ditekan */
+}

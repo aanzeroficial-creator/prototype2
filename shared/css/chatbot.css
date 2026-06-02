@@ -1,0 +1,202 @@
+/* 
+ * Chatbot Edukasi Literasi Finansial
+ * Author: Aan Rifai
+ */
+
+/* ==================================
+   1. TOMBOL MENGAMBANG (FLOATING BUTTON)
+   ================================== */
+#chatbot-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    background-color: #F1C40F; /* Kuning Ceria */
+    border: 4px solid #F39C12;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: pulseBot 2s infinite ease-in-out;
+}
+
+#chatbot-toggle:hover {
+    transform: scale(1.1);
+}
+
+@keyframes pulseBot {
+    0% { box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    50% { box-shadow: 0 5px 25px rgba(241, 196, 15, 0.6); }
+    100% { box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+}
+
+/* ==================================
+   2. JENDELA CHAT (CHAT WINDOW)
+   ================================== */
+#chatbot-window {
+    position: fixed;
+    bottom: 110px;
+    right: 30px;
+    width: 350px;
+    height: 500px;
+    max-height: 80vh;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform-origin: bottom right;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none; /* Nonaktifkan interaksi saat ditutup */
+    border: 3px solid #3498DB;
+}
+
+#chatbot-window.active {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: all;
+}
+
+/* Header Jendela Chat */
+.chatbot-header {
+    background-color: #3498DB;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbot-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.close-chatbot {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* Area Pesan (Isi Chat) */
+.chatbot-messages {
+    flex: 1;
+    background-color: #EBF5FB;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Gelembung Pesan (Bubble) */
+.message {
+    max-width: 80%;
+    padding: 12px 16px;
+    border-radius: 15px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    word-wrap: break-word;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message.bot {
+    align-self: flex-start;
+    background-color: white;
+    color: #2C3E50;
+    border: 2px solid #D6EAF8;
+    border-bottom-left-radius: 0;
+}
+
+.message.user {
+    align-self: flex-end;
+    background-color: #2ECC71;
+    color: white;
+    border-bottom-right-radius: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Kata kunci atau penekanan di dalam pesan bot */
+.message.bot strong.kebutuhan { color: #27AE60; }
+.message.bot strong.keinginan { color: #E74C3C; }
+
+/* Input Area (Bawah) */
+.chatbot-input-area {
+    background-color: white;
+    padding: 15px;
+    border-top: 2px solid #EBF5FB;
+    display: flex;
+    gap: 10px;
+}
+
+#chatbot-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #BDC3C7;
+    border-radius: 20px;
+    outline: none;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+#chatbot-input:focus {
+    border-color: #3498DB;
+}
+
+#chatbot-send {
+    background-color: #3498DB;
+    color: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+#chatbot-send:hover {
+    background-color: #2980B9;
+}
+
+/* Responsif Mobile */
+@media screen and (max-width: 600px) {
+    #chatbot-window {
+        width: 90vw;
+        height: 80vh;
+        bottom: 90px;
+        right: 5vw;
+    }
+    #chatbot-toggle {
+        width: 60px;
+        height: 60px;
+        bottom: 20px;
+        right: 20px;
+        font-size: 1.5rem;
+    }
+}
