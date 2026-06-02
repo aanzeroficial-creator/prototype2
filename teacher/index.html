@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Guru | FinKita</title>
+    <!-- Menghubungkan CSS global dan CSS spesifik guru -->
+    <link rel="stylesheet" href="../shared/css/global.css">
+    <link rel="stylesheet" href="css/teacher-style.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        
+        <!-- SIDEBAR KIRI -->
+        <aside class="sidebar">
+            <div class="sidebar-profile">
+                <div class="profile-avatar">👩</div>
+                <div class="profile-info">
+                    <h3>Aan Rifai, S.Pd.</h3>
+                    <p>Guru PNS</p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">📸 Review Foto Barang</a>
+            </nav>
+        </aside>
+
+        <!-- KONTEN UTAMA KANAN -->
+        <main class="main-content-area">
+            
+            <!-- TOP NAV / HEADER KONTEN -->
+            <header class="top-nav">
+                <div class="top-brand">
+                    <span class="logo-icon">🏛️</span>
+                    <span class="logo-text">FinKita</span>
+                    <span class="badge-edition">SD EDITION</span>
+                </div>
+                
+                <div class="top-user-actions">
+                    <button class="btn btn-logout-new">Ganti Akun</button>
+                </div>
+            </header>
+
+            <!-- KONTEN HALAMAN -->
+            <div class="content-wrapper">
+                
+                <!-- SEKSI BARU: PEMANTAUAN LMS -->
+                <section class="card" style="margin-bottom: 30px; border-top: 5px solid #2ECC71;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                        <h2 style="margin: 0; color: #2C3E50;">📡 Live Monitor Siswa Aktif</h2>
+                        <span id="activeCountBadge" style="background: #2ECC71; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold;">0 Siswa Online</span>
+                    </div>
+                    <p style="color: #7F8C8D; margin-bottom: 20px;">Daftar siswa yang sedang membuka aplikasi kelas. (Otomatis diperbarui secara real-time)</p>
+                    
+                    <div id="liveMonitorGrid" style="display: flex; flex-wrap: wrap; gap: 15px;">
+                        <!-- Siswa yang online akan muncul di sini -->
+                        <p style="color: #95A5A6; width: 100%; text-align: center; padding: 20px;">Belum ada siswa yang terdeteksi online...</p>
+                    </div>
+                </section>
+
+                <!-- SEKSI BARU: JEJAK KEAKTIFAN SISWA -->
+                <section class="card" style="margin-bottom: 30px; border-top: 5px solid #3498DB;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                        <h2 style="margin: 0; color: #2C3E50;">Jejak Aktivitas Siswa Terbaru</h2>
+                        <button id="btnClearActivityLogs" style="background:#E74C3C; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer; font-size:0.9rem;">Bersihkan Log</button>
+                    </div>
+                    <p style="color: #7F8C8D; margin-bottom: 20px;">Daftar lengkap gerak-gerik siswa di dalam LMS (Membuka materi, main kuis, tanya bot, dll).</p>
+                    
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                        <table id="activityLogTable" style="width: 100%; border-collapse: collapse;">
+                            <thead style="background: #f8f9fa; position: sticky; top: 0;">
+                                <tr>
+                                    <th style="padding: 10px; border-bottom: 2px solid #ddd; text-align: left;">Waktu</th>
+                                    <th style="padding: 10px; border-bottom: 2px solid #ddd; text-align: left;">Siswa</th>
+                                    <th style="padding: 10px; border-bottom: 2px solid #ddd; text-align: left;">Kelas</th>
+                                    <th style="padding: 10px; border-bottom: 2px solid #ddd; text-align: left;">Aktivitas</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activityLogTableBody">
+                                <!-- Data akan masuk sini -->
+                                <tr><td colspan="4" style="text-align:center; padding:20px; color:#95A5A6;">Memuat data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SEKSI UTAMA: REVIEW FOTO (Pengganti Data Barang) -->
+                <section class="review-section">
+                    <div class="section-header">
+                        <h2>Persetujuan Unggahan Foto & Rencana Belanja</h2>
+                        <p>Evaluasi foto barang kebutuhan atau keinginan yang difoto langsung oleh siswa. Berikan persetujuan untuk memberi reward XP!</p>
+                    </div>
+
+                    <!-- Filter Tabs -->
+                    <div class="filter-tabs">
+                        <button class="tab-pill" data-filter="all">Semua Foto <span id="countAll">(0)</span></button>
+                        <button class="tab-pill active" data-filter="pending">Perlu Review <span id="countPending">(0)</span></button>
+                        <button class="tab-pill" data-filter="approved">Sudah Disetujui <span id="countApproved">(0)</span></button>
+                    </div>
+
+                    <!-- Grid Kartu Foto -->
+                    <div class="photo-grid" id="itemsGrid">
+                        <!-- Data akan diisi oleh JavaScript dalam bentuk kartu -->
+                    </div>
+                </section>
+
+                <hr style="border: 1px solid #eee; margin: 40px 0;">
+
+                <!-- SEKSI LAIN (Dibawah Review Foto agar tetap bisa diakses) -->
+                <div class="other-sections">
+                    <!-- Seksi Pengaturan -->
+                    <section class="card" style="margin-bottom: 20px;">
+                        <h3>Pengaturan Aplikasi</h3>
+                        <div class="setting-group" style="display:flex; gap:15px; margin-top:15px; align-items:center;">
+                            <label for="limitFoto">Batas Foto Eksplorasi per Siswa:</label>
+                            <input type="number" id="limitFoto" min="1" max="20" style="padding:8px; border-radius:5px; border:1px solid #ccc; width:70px;">
+                            <button id="btnSaveLimit" style="background:#27AE60; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">Simpan</button>
+                            <span id="saveMessage" class="hidden" style="color:#27AE60; font-weight:bold;">Tersimpan!</span>
+                        </div>
+                    </section>
+
+                    <!-- Seksi Hasil Kuis -->
+                    <section class="card" style="margin-bottom: 20px;">
+                        <h3>Hasil Evaluasi Kuis & Belajar</h3>
+                        <div class="table-responsive">
+                            <table id="evalTable">
+                                <thead>
+                                    <tr>
+                                        <th>Waktu</th>
+                                        <th>Nama Siswa</th>
+                                        <th>Kelas</th>
+                                        <th>Aktivitas</th>
+                                        <th>Skor</th>
+                                        <th>Catatan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="evalTableBody"></tbody>
+                            </table>
+                        </div>
+                        <button id="btnClearEval" style="margin-top:10px; background:#E74C3C; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">Bersihkan Data Kuis</button>
+                    </section>
+
+                    <!-- Seksi Laporan Perencanaan -->
+                    <section class="card">
+                        <h3>Pemantauan Perencanaan Keuangan Siswa</h3>
+                        <div class="table-responsive">
+                            <table id="planTable">
+                                <thead>
+                                    <tr>
+                                        <th>Waktu</th>
+                                        <th>Nama Siswa</th>
+                                        <th>Kelas</th>
+                                        <th>Uang Saku</th>
+                                        <th>Pengeluaran</th>
+                                        <th>Status</th>
+                                        <th>Rincian Jajan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="planTableBody"></tbody>
+                            </table>
+                        </div>
+                        <button id="btnClearPlan" style="margin-top:10px; background:#E74C3C; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">Bersihkan Data Perencanaan</button>
+                    </section>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Script JavaScript -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    
+    <script src="../shared/js/firebase-db.js" defer></script>
+    <script src="../shared/js/utils.js" defer></script>
+    <script src="js/teacher-main.js?v=2" defer></script>
+</body>
+</html>

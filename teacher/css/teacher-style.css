@@ -1,0 +1,384 @@
+/* 
+ * Proyek Web Edukasi Literasi Finansial PGSD
+ * Desain Baru: FinKita SD EDITION
+ */
+
+:root {
+    --sidebar-bg: #2C3E50;
+    --sidebar-text: #ECF0F1;
+    --sidebar-active: #1ABC9C;
+    --bg-main: #F9F9F9;
+    --card-bg: #FFFFFF;
+    --text-dark: #2C3E50;
+    --text-muted: #7F8C8D;
+    --accent: #F39C12;
+    --success: #2ECC71;
+    --success-hover: #27AE60;
+    --danger: #E74C3C;
+    --border-color: #E0E0E0;
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-main);
+    background-color: var(--bg-main);
+    color: var(--text-dark);
+}
+
+/* =========================================
+   1. LAYOUT UTAMA (GRID)
+   ========================================= */
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =========================================
+   2. SIDEBAR KIRI
+   ========================================= */
+.sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+.sidebar-profile {
+    padding: 30px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.profile-avatar {
+    font-size: 2.5rem;
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.profile-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    color: white;
+}
+
+.profile-info p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #BDC3C7;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+}
+
+.nav-item {
+    padding: 15px 25px;
+    color: #BDC3C7;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-item:hover {
+    background-color: rgba(255,255,255,0.05);
+    color: white;
+}
+
+.nav-item.active {
+    background-color: var(--sidebar-active);
+    color: white;
+    border-left: 5px solid #16A085;
+}
+
+/* =========================================
+   3. KONTEN UTAMA & HEADER
+   ========================================= */
+.main-content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.top-nav {
+    background: white;
+    height: 70px;
+    padding: 0 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.top-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    color: var(--accent);
+    font-size: 1.8rem;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -1px;
+}
+
+.badge-edition {
+    background: #00CEC9;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.top-user-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.login-as-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.user-dropdown {
+    border: 1px solid var(--border-color);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-switch {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.btn-switch.active {
+    background: #F1F2F6;
+    color: var(--text-dark);
+    border-color: #DCDDE1;
+}
+
+.btn-logout-new {
+    background: #FEF9E7;
+    border: 1px solid #F1C40F;
+    color: #D35400;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* =========================================
+   4. AREA KONTEN (REVIEW FOTO)
+   ========================================= */
+.content-wrapper {
+    padding: 40px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.section-header h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.8rem;
+    color: var(--text-dark);
+}
+
+.section-header p {
+    color: var(--text-muted);
+    margin: 0 0 30px 0;
+    font-size: 1rem;
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.tab-pill {
+    background: white;
+    border: 1px solid var(--border-color);
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.tab-pill.active {
+    background: var(--sidebar-active);
+    color: white;
+    border-color: var(--sidebar-active);
+}
+
+/* =========================================
+   5. GRID KARTU FOTO
+   ========================================= */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.photo-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #F1F2F6;
+}
+
+.photo-wrapper {
+    height: 180px;
+    background: #EAECEE;
+    position: relative;
+}
+
+.photo-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.badge-pending {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #E67E22;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.item-name {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.item-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.item-price {
+    color: var(--danger);
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.item-category {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-approve {
+    background: var(--success);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: auto;
+    transition: background 0.2s;
+}
+
+.btn-approve:hover {
+    background: var(--success-hover);
+}
+
+/* =========================================
+   6. TABEL LAMA (DISESUAIKAN)
+   ========================================= */
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+    margin: 0 0 20px 0;
+    color: var(--text-dark);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ECF0F1;
+}
+
+th {
+    background-color: #F8F9F9;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Utility */
+.hidden { display: none !important; }
