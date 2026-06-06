@@ -49,6 +49,32 @@ document.addEventListener('DOMContentLoaded', () => {
             warna: "Merah",
             tokoh: "Soekarno & Mohammad Hatta",
             ciri: "Uang seratus ribu rupiah adalah pecahan terbesar dan berwarna merah."
+        },
+        {
+            nominal: 100,
+            warna: "Merah",
+            tokoh: "Soekarno & Mohammad Hatta",
+            ciri: "Uang seratus ribu rupiah adalah pecahan terbesar dan berwarna merah."
+        },
+        {
+            nominal: 200,
+            warna: "Merah",
+            tokoh: "Soekarno & Mohammad Hatta",
+            ciri: "Uang seratus ribu rupiah adalah pecahan terbesar dan berwarna merah."
+        },
+
+        {
+            nominal: 500,
+            warna: "Merah",
+            tokoh: "Soekarno & Mohammad Hatta",
+            ciri: "Uang seratus ribu rupiah adalah pecahan terbesar dan berwarna merah."
+        },
+
+        {
+            nominal: 1000,
+            warna: "Merah",
+            tokoh: "Soekarno & Mohammad Hatta",
+            ciri: "Uang seratus ribu rupiah adalah pecahan terbesar dan berwarna merah."
         }
     ];
 

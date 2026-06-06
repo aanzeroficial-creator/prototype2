@@ -218,6 +218,176 @@ body {
     font-size: 1rem;
 }
 
+/* =========================================
+   6. TAB & KARTU HASIL KUIS SISWA
+   ========================================= */
+.game-dashboard-card {
+    background: linear-gradient(135deg, #6DD5FA, #2980B9);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    border: 5px solid #fff;
+}
+
+.student-tabs-wrapper {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 5px;
+    margin-bottom: -5px; /* Tumpuk sedikit dengan kontainer konten */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.5) transparent;
+}
+
+.student-tabs-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+.student-tabs-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.5);
+    border-radius: 10px;
+}
+
+.student-tabs-container {
+    display: flex;
+    gap: 10px;
+}
+
+.student-tab-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 20px 20px 0 0;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-bottom: none;
+    text-transform: capitalize;
+}
+
+.student-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.student-tab-btn.active {
+    background: #fff;
+    color: #2980B9;
+    border-color: #fff;
+    transform: scale(1.05) translateY(2px);
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+    z-index: 2;
+    position: relative;
+}
+
+.student-tab-content-container {
+    background: #fff;
+    border-radius: 0 20px 20px 20px;
+    padding: 25px;
+    color: #333;
+    min-height: 250px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 1;
+}
+
+.empty-tab-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: #7F8C8D;
+    background: #f9fbff;
+    border-radius: 15px;
+    border: 2px dashed #BDC3C7;
+}
+
+.student-results-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Dibuat penuh 1 layar ke samping */
+    gap: 20px;
+}
+
+.mission-result-card {
+    background: #fdfefe;
+    border-radius: 15px;
+    padding: 20px;
+    border-left: 8px solid #F1C40F;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.mission-result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.mission-result-card.kuis {
+    border-left-color: #9B59B6;
+}
+
+.mission-result-card.game {
+    border-left-color: #E74C3C;
+}
+
+.mission-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.mission-date {
+    font-size: 0.8rem;
+    color: #95A5A6;
+    font-weight: bold;
+}
+
+.mission-badge {
+    background: #F1C40F;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.mission-badge.kuis { background: #9B59B6; }
+.mission-badge.game { background: #E74C3C; }
+
+.mission-score {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #2C3E50;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.mission-notes {
+    background: #F1F2F6;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #34495E;
+}
+
+.btn-game-danger {
+    background: #E74C3C;
+    color: white;
+    border: 2px solid #C0392B;
+    padding: 8px 15px;
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #C0392B;
+    transition: all 0.1s;
+}
+
+.btn-game-danger:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 #C0392B;
+}
+
 .filter-tabs {
     display: flex;
     gap: 15px;
@@ -382,3 +552,59 @@ th {
 
 /* Utility */
 .hidden { display: none !important; }
+
+/* =========================================
+   7. RESPONSIVE MOBILE (ANTI MENUMPUK)
+   ========================================= */
+@media (max-width: 768px) {
+    .dashboard-layout {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+    }
+    .top-nav {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+        gap: 15px;
+        text-align: center;
+    }
+    .top-user-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    .btn-logout-new {
+        width: 100%;
+    }
+    .content-wrapper {
+        padding: 15px;
+    }
+    /* Memaksa grid formulir menjadi 1 kolom ke bawah */
+    #formTambahBarangToko {
+        grid-template-columns: 1fr !important;
+    }
+    #formTambahBarangToko button {
+        grid-column: span 1 !important;
+    }
+    /* Mencegah tombol-tombol yang sejajar menjadi menumpuk/bertabrakan */
+    div[style*="flex-wrap: wrap"], div[style*="flex-wrap:wrap"] {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+    div[style*="flex-wrap: wrap"] button, div[style*="flex-wrap:wrap"] button {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    .setting-group {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+    .setting-group label {
+        width: 100% !important;
+    }
+    .setting-group input {
+        width: 100% !important;
+    }
+}

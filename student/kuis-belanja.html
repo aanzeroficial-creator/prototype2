@@ -2,59 +2,95 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuis Simulasi Belanja 2D</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Game Berbelanja: Belanja Kebutuhan</title>
     <!-- Memuat CSS Global dan Spesifik Kuis -->
     <link rel="stylesheet" href="../shared/css/global.css">
     <link rel="stylesheet" href="css/kuis.css">
-    <link rel="stylesheet" href="../shared/css/chatbot.css">
+    <style>
+        /* CSS Modal Rak Toko */
+        .modal-rak { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center; }
+        .modal-rak-content { background:white; width:95%; max-width: 900px; height:90%; border-radius:20px; display:flex; flex-direction:column; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .modal-rak-header { background: linear-gradient(135deg, #8E44AD, #9B59B6); padding:20px; color:white; display:flex; justify-content:space-between; align-items:center; border-bottom: 4px solid #732D91; }
+        .modal-rak-body { flex:1; overflow-y:auto; padding:20px; background:#f4f6f7; }
+        
+        .shop-tabs { display:flex; gap:12px; overflow-x:auto; padding-bottom:20px; margin-bottom: 10px; border-bottom: 2px dashed #ddd; }
+        .shop-tab { padding:12px 25px; background:#fff; border:3px solid #ddd; border-radius:30px; cursor:pointer; font-weight:bold; white-space:nowrap; font-size: 1.1rem; color: #7F8C8D; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .shop-tab:hover { border-color: #3498DB; color: #3498DB; transform: translateY(-2px); }
+        .shop-tab.active { background:#3498DB; color:white; border-color:#2980B9; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.4); transform: translateY(-3px); }
+        
+        .items-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:15px; }
+        .item-card { background:white; border-radius:10px; padding:10px; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,0.1); cursor:pointer; border:2px solid transparent; transition:transform 0.1s; }
+        .item-card:hover { transform:scale(1.05); border-color:#3498DB; }
+        .item-img { width:100%; height:100px; object-fit:contain; margin-bottom:10px; }
+        .item-name { font-weight:bold; font-size:1rem; color:#2C3E50; margin-bottom:5px; }
+        .item-price { color:#E67E22; font-weight:bold; font-size:1.1rem; }
+
+        .btn-tutup-rak { background:#E74C3C; color:white; border:none; padding:8px 15px; border-radius:8px; font-weight:bold; cursor:pointer; }
+        
+        /* Area Keranjang Visual */
+        .keranjang-visual { position:absolute; bottom:50%; left:5%; width:90%; height:auto; display:flex; flex-wrap:wrap-reverse; align-content:flex-start; justify-content:center; z-index:10; }
+        .keranjang-visual img { 
+            width:55px; 
+            height:55px; 
+            object-fit:contain; 
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5)); 
+            margin-left: -25px; /* Membuat gambar saling tumpang tindih ke samping */
+            margin-bottom: -20px; /* Jika berbaris ke atas, akan menumpuk ke atas */
+            transition: transform 0.2s;
+        }
+        .keranjang-visual img:first-child {
+            margin-left: 0; /* Barang pertama tidak perlu digeser ke kiri */
+        }
+        .keranjang-visual img:hover {
+            transform: scale(1.2) translateY(-10px);
+            z-index: 100;
+            position: relative;
+        }
+    </style>
 </head>
 <body>
-    <!-- 
-      Proyek Web Edukasi Literasi Finansial PGSD
-      Author: Aan Rifai (NIM: 2501050298, No. Absen: 28)
-      Universitas Negeri Semarang (UNNES)
-    -->
     
     <!-- OVERLAY ROTASI LAYAR KHUSUS MOBILE -->
     <div id="rotateOverlay">
         <div class="rotate-icon">📱</div>
         <h2>Putar Layar HP Anda!</h2>
-        <p>Kuis belanja ini dirancang untuk dimainkan dalam mode miring (Landscape) agar lebih seru.</p>
+        <p>Game belanja ini dirancang untuk dimainkan dalam mode miring (Landscape) agar kamu leluasa mengambil uang.</p>
         <button id="btnForceLandscape" class="btn-rotate">Main Layar Penuh (Otomatis Miring)</button>
     </div>
 
     <!-- 1. TOP BAR (HEADER) -->
-    <header class="game-header">
+    <header class="game-header" id="gameHeader" style="justify-content: space-between;">
         <div class="header-left">
-            <a href="eksplorasi.html" class="btn-pause">⏸️ Kembali</a>
+            <a href="eksplorasi.html" class="btn-pause">⏸️ Misi Misteri</a>
+            <button id="btnBukaRak" style="margin-left:15px; background:#F1C40F; color:#B7950B; border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor:pointer; font-size:1rem; box-shadow:0 2px 4px rgba(0,0,0,0.2);">🏪 Pergi ke Rak Toko</button>
         </div>
         <div class="header-center">
-            <div class="timer">⏳ <span id="timerDisplay">01:00</span></div>
-            <div class="score">⭐ Skor: <span id="scoreDisplay">0</span></div>
+            <div class="score" style="background:#27AE60; color:white;">💰 Sisa Uang Saku: <span id="budgetDisplay">Memuat...</span></div>
+            <div class="timer" id="timerDisplay" style="background:#E74C3C; color:white; font-weight:bold; padding:10px 20px; border-radius:30px; font-size:1.2rem; display:flex; align-items:center; gap:5px; box-shadow:0 4px 6px rgba(0,0,0,0.2);">⏱️ 02:00</div>
         </div>
         <div class="header-right">
-            <!-- Ikon Nyawa/Kesempatan (Berupa jejeran ikon wajah) -->
-            <div class="lives" id="livesDisplay">
-                😀 😀 😀
-            </div>
+            <button id="btnSelesaiBelanja" class="btn-action" style="background:#3498DB; border-color:#2980B9; color:white;">✅ Selesai Belanja</button>
         </div>
     </header>
 
     <!-- 2. AREA UTAMA (FLEXBOX: KIRI KE KANAN) -->
-    <main class="game-area">
+    <main class="game-area" id="gameArea">
         
         <!-- ===============================
-             KIRI: Karakter Pembeli
+             KIRI: Karakter Pembeli & Keranjang
              =============================== -->
-        <div class="area-kiri">
+        <div class="area-kiri" style="position:relative;">
             <!-- Karakter Siswa (Pembeli) -->
             <div class="placeholder-character pembeli" style="background: transparent; box-shadow: none;">
                 <img src="aset%20student/9.png" alt="Siswa" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <!-- Keranjang belanja -->
-            <div class="placeholder-keranjang" style="background: transparent; box-shadow: none;">
+            <div class="placeholder-keranjang" style="background: transparent; box-shadow: none; position:relative;">
                 <img src="aset%20student/keranjang%20belanja.png" alt="Keranjang" style="width: 100%; height: 100%; object-fit: contain;">
+                <div class="keranjang-visual" id="keranjangVisual">
+                    <!-- Barang yang dibeli akan numpuk di sini -->
+                </div>
             </div>
         </div>
 
@@ -62,7 +98,6 @@
              TENGAH: Dompet Interaktif
              =============================== -->
         <div class="area-tengah">
-
 
             <!-- Kontainer Dompet dengan Aset Gambar -->
             <div class="dompet-container" style="background: transparent; border: none; box-shadow: none; padding: 0; position: relative; display: inline-block;">
@@ -90,7 +125,7 @@
             </div>
             
             <!-- Tombol Batal/Ulang -->
-            <button id="btnResetUang" class="btn-action reset-uang" style="margin-top: 10px; z-index: 4;">Batal / Ulangi Hitung Uang</button>
+            <button id="btnResetUang" class="btn-action reset-uang" style="margin-top: 10px; z-index: 4;">Batal / Tarik Uang Kembali</button>
         </div>
 
         <!-- ===============================
@@ -98,52 +133,141 @@
              =============================== -->
         <div class="area-kanan">
             <!-- Balon Kata (Speech Bubble) untuk Harga Barang -->
-            <div class="speech-bubble">
-                <p id="bubbleText">Memuat Barang...</p>
-                <div class="bubble-arrow"></div>
+            <div class="speech-bubble" id="pertanyaanKasir">
+                Halo! Mau beli apa hari ini? Coba pergi ke <strong>Rak Toko</strong> dulu ya!
             </div>
             
-            <!-- Karakter Kasir -->
-            <div class="placeholder-character kasir" style="background: transparent; box-shadow: none;">
+            <!-- Karakter Kasir dan Barang yang Dipilih -->
+            <div style="position:relative; display:flex; flex-direction:column; align-items:center; width:100%;">
+                <!-- Karakter Kasir -->
+                <div class="placeholder-character kasir" style="background: transparent; box-shadow: none;">
+                <!-- Menggunakan 8.png karena 11.png tidak ada di direktori -->
                 <img src="aset%20student/8.png" alt="Kasir" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             
-            <!-- Mesin Kasir di depan karakter kasir -->
-            <div class="mesin-kasir">
-                <div class="layar-digital">
-                    <span class="currency">Rp</span>
-                    <span id="mesinKasirDisplay">0</span>
+            <!-- Meja Kasir Berwarna Coklat -->
+            <div style="width: 120%; height: 200%; background: linear-gradient(to bottom, #A0522D, #8B4513); border-top: 8px solid #CD853F; border-radius: 8px 8px 0 0; padding-top: 15px; padding-bottom: 20px; display: flex; justify-content: center; position: relative; z-index: 2; box-shadow: 0 -5px 15px rgba(0,0,0,0.3); margin-bottom: 20px;">
+                
+                <!-- Mesin Kasir (Di atas meja) -->
+                <div class="placeholder-mesin" style="background: #BDC3C7; border: 4px solid #7F8C8D; border-radius: 10px; padding: 10px; width: 120px; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; box-shadow: 0 5px 15px rgba(0,0,0,0.4); margin-top: -50px; z-index: 3;">
+                    <div style="background: #2C3E50; width: 90%; height: 40px; border-radius: 5px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; position: relative;">
+                        <!-- Layar Total Uang yang Diserahkan -->
+                        <div id="uangTerkumpulDisplay" style="font-weight: bold; color: #2ecc71; font-size: 1.4rem; font-family: monospace; letter-spacing: 2px;">
+                            0
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; width: 80%;">
+                        <div style="background: #95A5A6; height: 10px; border-radius: 2px;"></div>
+                        <div style="background: #95A5A6; height: 10px; border-radius: 2px;"></div>
+                        <div style="background: #95A5A6; height: 10px; border-radius: 2px;"></div>
+                        <div style="background: #95A5A6; height: 10px; border-radius: 2px;"></div>
+                        <div style="background: #95A5A6; height: 10px; border-radius: 2px;"></div>
+                        <div style="background: #E74C3C; height: 10px; border-radius: 2px;"></div>
+                    </div>
                 </div>
-                <!-- Tombol Bayar -->
-                <button id="btnBayar" class="btn-action btn-bayar">BAYAR SEKARANG</button>
+                
             </div>
+            
+            <!-- Tombol Bayar -->
+            <button id="btnBayar" class="btn-action bayar">Serahkan Uang</button>
         </div>
-
     </main>
 
     <!-- ===============================
-         OVERLAY POPUP (Pesan Error/Sukses)
+         AREA EVALUASI / RINCIAN BELANJA
          =============================== -->
-    <div id="gameOverlay" class="game-overlay hidden">
-        <div class="overlay-box" id="overlayBox">
-            <h2 id="overlayTitle">Pesan</h2>
-            <p id="overlayMessage">Deskripsi</p>
-            <button id="btnLanjut" class="btn-action">Lanjut</button>
+    <section id="evaluasi-belanja" class="evaluasi-section" style="display: none;">
+        <div class="evaluasi-card">
+            <!-- Tombol Keluar (X) -->
+            <button id="btnTutupEvaluasi" class="btn-close-evaluasi" aria-label="Tutup Laporan" title="Keluar">✖</button>
+
+            <!-- Logo & Judul -->
+            <div class="evaluasi-header">
+                <div class="logo-wrapper">
+                    <img src="../aset%20logo%20saku%20pintar.jpeg" alt="Saku Pintar">
+                </div>
+                <h1>Laporan Keuangan Misimu</h1>
+                <p>Waktu belanja sudah habis atau kamu telah menyelesaikannya. Mari kita cek pengeluaranmu!</p>
+            </div>
+
+            <!-- Ringkasan Saldo -->
+            <div class="evaluasi-saldo-container">
+                <div class="saldo-box">
+                    <p>Saldo Awal</p>
+                    <h2 id="evalSaldoAwal">Rp 0</h2>
+                </div>
+                <div class="saldo-divider"></div>
+                <div class="saldo-box sisa-box">
+                    <p>Sisa Saldo</p>
+                    <h2 id="evalSisaSaldo">Rp 0</h2>
+                </div>
+            </div>
+
+            <!-- Tabel Daftar Belanjaan -->
+            <h3 class="evaluasi-table-title">Daftar Pengeluaran</h3>
+            <div class="evaluasi-table-wrapper">
+                <table class="evaluasi-table">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Nama Barang</th>
+                            <th>Harga</th>
+                        </tr>
+                    </thead>
+                    <tbody id="evalTabelBody">
+                        <!-- Baris akan diisi oleh JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Form Perencanaan -->
+            <div class="evaluasi-perencanaan">
+                <h3>Rencana Sisa Uang</h3>
+                <p>Kamu memiliki sisa uang sebesar <strong id="teksSisaUang">Rp 0</strong>. Apa rencanamu terhadap sisa uang tersebut? (Misalnya: ditabung, disedekahkan, atau disimpan untuk besok).</p>
+                <textarea id="inputPerencanaan" rows="4" placeholder="Tulis rencana hebatmu di sini..."></textarea>
+                
+                <button id="btnSimpanEvaluasi" class="btn-simpan-eval">💾 Simpan ke Buku Tabungan</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL RAK TOKO -->
+    <div class="modal-rak" id="modalRak">
+        <div class="modal-rak-content">
+            <div class="modal-rak-header">
+                <div>
+                    <h2 style="margin:0; font-size: 1.8rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">🏪 Etalase</h2>
+                    <p style="margin:5px 0 0 0; font-size: 1.1rem; color: #F1C40F; font-weight: bold;">Sisa Uang Sakumu: <span id="modalBudgetDisplay">Memuat...</span></p>
+                </div>
+                <button class="btn-tutup-rak" id="btnTutupRak" style="display:none; font-size: 1.2rem; padding: 10px 20px;">❌ Tutup Rak</button>
+            </div>
+            <div class="modal-rak-body">
+                <div class="shop-tabs" id="shopTabsContainer">
+                    <div class="shop-tab active" data-shop="all">🌟 Semua Toko</div>
+                </div>
+                <div class="items-grid" id="rakBarangGrid">
+                    <p style="grid-column:1/-1; text-align:center; color:#7F8C8D;">Memuat data barang...</p>
+                </div>
+            </div>
+            </div>
+            <div style="padding: 15px; border-top: 2px solid #ECF0F1; text-align: center; background: #FDFEFE; border-radius: 0 0 20px 20px;">
+                <button id="btnMulaiBermain" style="background: #27AE60; color: white; border: none; padding: 10px 30px; border-radius: 10px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); transition: transform 0.2s;">🛒 Mulai Game</button>
+            </div>
         </div>
     </div>
 
-    <!-- Script JavaScript -->
-    <!-- Memuat Firebase SDK (Compat Version untuk mendukung file://) -->
+    <!-- Peringatan Feedback -->
+    <div id="feedbackToast" style="display:none; position:fixed; bottom:20px; left:50%; transform:translateX(-50%); padding:15px 30px; border-radius:30px; font-weight:bold; color:white; z-index:99999; box-shadow:0 4px 15px rgba(0,0,0,0.3); font-size:1.2rem;">
+        Pesan Feedback
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    
-    <!-- Memuat Utils untuk fungsi formatRupiah dan shuffleArray -->
-    <script src="../shared/js/utils.js" defer></script>
-    <script src="../shared/js/firebase-db.js" defer></script>
-    <script src="../shared/js/presence-tracker.js" defer></script>
-    <!-- Memuat logika Kuis spesifik -->
-    <script src="js/kuis.js" defer></script>
-    <!-- Script Chatbot -->
-    <script src="../shared/js/chatbot.js" defer></script>
+    <script src="../shared/js/firebase-db.js"></script>
+    <script src="../shared/js/presence-tracker.js"></script>
+    <script src="../shared/js/utils.js"></script>
+    <script src="js/kuis-belanja.js"></script>
 </body>
 </html>

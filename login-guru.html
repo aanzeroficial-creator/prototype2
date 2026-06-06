@@ -71,6 +71,9 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.1s;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
         .btn-login:active {
             transform: translateY(5px);
@@ -95,7 +98,7 @@
         }
     </style>
 </head>
-<body>
+<body ontouchstart="">
     <div class="login-card">
         <h1>Dashboard Guru 👨‍🏫</h1>
         <p id="errorMsg" class="error-msg">Email atau Password Salah!</p>

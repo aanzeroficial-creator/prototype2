@@ -81,6 +81,8 @@ body {
     gap: 20px;
     align-items: flex-end; /* Semua elemen disejajarkan ke garis bawah (lantai imajiner) */
     min-height: 0; /* Penting agar isi tidak memaksa ukuran membesar */
+    position: relative;
+    z-index: 20; /* Memastikan elemen di area ini (termasuk balon) berada di atas header */
 }
 
 /* ============================
@@ -98,9 +100,9 @@ body {
 /* Kotak Placeholder untuk karakter */
 .placeholder-character {
     width: 25vw;
-    height: 45vh;
-    max-width: 280px;
-    max-height: 400px;
+    height: 40vh;
+    max-width: 250px;
+    max-height: 350px;
     border-radius: 20px 20px 0 0; 
     display: flex;
     align-items: flex-end;
@@ -152,6 +154,20 @@ body {
     justify-content: flex-end;
     align-items: center;
     height: 100%;
+}
+
+.modal-rak-content {
+    background: #FDFEFE;
+    width: 95vw;
+    max-width: none;
+    height: 95vh;
+    max-height: none;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    animation: popUp 0.3s ease-out;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    overflow: hidden;
 }
 
 .dompet-container {
@@ -285,16 +301,17 @@ body {
 .speech-bubble {
     background: #F1C40F;
     border: 4px solid #F39C12;
-    padding: 20px;
+    padding: 15px; /* Sedikit dikecilkan dari 20px */
     border-radius: 20px;
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 5px; /* Dikecilkan drastis agar tidak terlalu mendorong ke atas */
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.1rem; /* Sedikit dikecilkan */
     color: #2C3E50;
     text-align: center;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     animation: bounce 2s infinite ease-in-out;
+    z-index: 100;
 }
 
 /* Animasi naik turun pelan pada balon kata */
@@ -319,9 +336,9 @@ body {
 .kasir {
     background-color: transparent;
     width: 25vw;
-    height: 45vh;
-    max-width: 280px;
-    max-height: 400px;
+    height: 30vh; /* Dikurangi agar balon percakapan turun */
+    max-width: 250px;
+    max-height: 250px;
     margin-bottom: -30px; /* Tarik kasir ke bawah mesin kasir */
     z-index: 1; 
 }
@@ -494,102 +511,699 @@ body {
    5. RESPONSIVE / SKALA UNTUK HP LANDSCAPE
    ================== */
 @media screen and (max-width: 950px), screen and (max-height: 500px) {
+    body {
+        /* Sedikit mengecilkan seluruh game agar muat */
+        zoom: 0.85; 
+        -moz-transform: scale(0.85);
+        -moz-transform-origin: top center;
+    }
+
     .game-area {
-        padding: 10px 15px;
-        gap: 10px;
+        padding: 5px 10px;
+        gap: 5px;
+        align-items: flex-end; /* Supaya semua karakter menempel di lantai */
     }
     
     .game-header {
         padding: 5px 10px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap; /* Jangan ditumpuk */
+        justify-content: space-between;
+        gap: 5px;
+    }
+    
+    .btn-pause, #btn-rak-toko {
+        padding: 6px 10px !important;
+        font-size: 0.75rem !important;
+        white-space: nowrap;
     }
     
     .header-center {
         gap: 10px;
-        font-size: 0.9rem;
-        padding: 5px 10px;
-    }
-    
-    .btn-pause {
-        padding: 6px 10px;
         font-size: 0.8rem;
+        padding: 5px 10px;
+        white-space: nowrap;
     }
     
     .lives { font-size: 1rem; }
 
-    /* Pengecilan Karakter Kiri */
-    .placeholder-character {
-        max-width: 260px;
-        font-size: 0.9rem;
+    /* Area Kiri: Karakter & Keranjang */
+    .area-kiri {
+        flex: 1;
+        display: flex;
+        align-items: flex-end !important; 
+        padding-bottom: 0 !important;
+    }
+    .area-kiri .placeholder-character {
+        width: 160px !important; /* Proporsi besar dan ramping */
+        height: auto !important; 
+        margin-bottom: 0 !important; 
+        position: relative !important;
+        top: 45px !important; /* Visual shift turun 45px, memotong lutut */
+        margin-left: -10px !important;
+    }
+    .area-kiri .placeholder-character img {
+        width: 100% !important;
+        height: auto !important;
+        display: block;
     }
     .placeholder-keranjang {
-        width: 15vw;
-        max-width: 100px;
-        margin-left: -30px;
+        width: 220px !important; /* Ukuran besar */
+        height: auto !important; 
+        margin-bottom: 0 !important; 
+        position: relative !important;
+        top: 60px !important; /* Visual shift turun 60px, pasti memotong roda */
+        margin-left: -30px !important; 
+        z-index: 2;
+    }
+    .placeholder-keranjang > img {
+        width: 100% !important;
+        height: auto !important;
+        display: block;
     }
 
     /* Pengecilan Dompet Tengah */
+    .area-tengah {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end !important; /* Dorong ke bawah mentok */
+        padding-bottom: 5px;
+    }
     .dompet-container {
-        padding: 5px 10px;
+        max-width: 260px !important; 
+        padding: 5px;
         border-width: 2px;
-        max-width: 280px;
-        margin-bottom: 5px;
+        margin-bottom: 0 !important;
     }
-    .dompet-header h3 {
-        margin: 5px 0;
-        font-size: 0.9rem;
-    }
-    .dompet-header p {
-        font-size: 0.65rem !important;
-        margin-bottom: 5px;
+    .dompet-container > img {
+        width: 220px !important;
+        max-width: 100% !important;
     }
     .uang-kertas-container {
-        height: 40px;
-        margin-bottom: 15px;
-        gap: -30px;
-    }
-    .kertas {
-        width: 70px;
-        height: 35px;
-        font-size: 0.7rem;
+        transform: scale(0.7);
+        top: -15px !important;
+        margin-bottom: 0 !important;
     }
     .uang-koin-container {
-        gap: 5px;
-        margin-bottom: 10px;
-    }
-    .koin {
-        width: 35px;
-        height: 35px;
-        font-size: 0.75rem;
+        transform: scale(0.85);
+        margin-bottom: 5px !important;
     }
     .reset-uang {
-        padding: 5px 10px;
-        font-size: 0.75rem;
+        padding: 5px 12px;
+        font-size: 0.8rem;
+        margin-bottom: 0 !important;
     }
 
     /* Pengecilan Area Kanan (Kasir) */
-    .speech-bubble {
-        padding: 10px;
-        font-size: 0.9rem;
-        margin-bottom: 15px;
-        border-width: 2px;
+    .area-kanan {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end !important; /* Dorong semua mentok ke bawah */
     }
     .kasir {
-        max-width: 200px;
+        max-width: 140px !important; 
+        margin-bottom: -45px !important; /* Ditarik lebih jauh ke bawah agar badan terpotong meja */
+        z-index: 1;
     }
-    .mesin-kasir {
-        width: 140px;
-        padding: 10px 10px 5px 10px;
-        margin-top: -15px;
+    .kasir img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    
+    /* Targetkan elemen Meja Kasir langsung untuk membatalkan margin-bottom inline-nya */
+    .area-kanan > div[style*="linear-gradient"] {
+        margin-bottom: 0 !important;
+        border-radius: 8px 8px 0 0 !important; /* Bawah rata/siku agar nempel lantai */
+        padding-bottom: 35px !important; /* Tambah ruang bawah meja agar bisa diisi tombol */
+    }
+
+    /* Meja & Mesin Kasir */
+    .placeholder-mesin {
+        width: 110px !important;
+        height: 80px !important;
+        padding: 5px !important;
+        margin-top: -30px !important; 
     }
     .layar-digital {
-        font-size: 1rem;
-        padding: 5px;
-        margin-bottom: 8px;
+        font-size: 1rem !important;
+        padding: 5px !important;
+        margin-bottom: 5px !important;
     }
     .btn-bayar {
-        padding: 8px;
-        font-size: 0.9rem;
-        margin-bottom: 15px;
+        padding: 5px !important;
+        font-size: 0.75rem !important;
+        margin-top: -35px !important; /* Tarik tombol naik ke atas meja kasir */
+        margin-bottom: 5px !important;
+        position: relative;
+        z-index: 10 !important;
+        width: 90% !important; /* Agar tidak kepanjangan */
     }
+    .speech-bubble {
+        padding: 6px 10px !important;
+        font-size: 0.7rem !important;
+        margin-bottom: -5px !important; 
+        max-width: 180px;
+        text-align: center;
+    }
+}
+
+/* Optimasi Lebar (Mencegah meluber ke samping / horizontal overflow) */
+@media screen and (max-width: 950px) {
+    .area-kiri { flex: 0.8; }
+    .area-kanan { flex: 1.2; }
+    
+    .dompet-container { padding: 10px; }
+    
+    .kertas {
+        width: 65px;
+        height: 40px;
+        margin-left: -20px;
+    }
+    .k-2k { margin-left: 0; }
+    
+    .uang-kertas-container { gap: -20px; height: 50px; margin-bottom: 15px; }
+    .uang-koin-container { gap: 8px; margin-bottom: 10px; }
+    
+    .koin {
+        width: 45px;
+        height: 45px;
+        font-size: 0.8rem;
+    }
+    
+    .mesin-kasir {
+        width: 100%;
+        max-width: 200px;
+        padding: 10px;
+    }
+    
+    .placeholder-keranjang {
+        width: 160px !important; /* Ukuran besar */
+        height: auto !important; 
+        margin-bottom: 0 !important; 
+        position: relative !important;
+        top: 80px !important; /* Visual shift turun 60px, pasti memotong roda */
+        margin-left: -30px !important; 
+        z-index: 3;
+    }
+    
+    .pembeli { 
+        z-index: 3; /* Hanya pembeli yang di depan keranjang, bukan kasir */
+        width: 60vw !important; 
+        height: 90vh !important;
+        max-width: 600px !important;
+        max-height: 850px !important;
+        margin-bottom: -15vh !important;
+        margin-left: 2vw !important; /* Geser kanan agar tangan tidak terpotong batas kiri */
+    }
+    .pembeli img {
+        transform: scale(1.6); /* Diperbesar agar seimbang di HP */
+        transform-origin: bottom left; /* Membesar ke kanan */
+    }
+    
+    .btn-action {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+    
+    .header-center {
+        margin-right: 8vw; /* Geser panel waktu & uang saku ke kiri */
+    }
+}
+
+/* Optimasi Mutlak untuk Semua Device (Anti Terpotong Vertikal) */
+/* Pada layar landscape biasa (misal smartphone) kita kecilkan bubble dan font agar muat */
+@media screen and (max-height: 550px) {
+    .speech-bubble {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        margin-bottom: -15px; 
+        right: 120px; /* Geser lebih jauh ke kiri agar wajah kasir bebas sepenuhnya */
+    }
+    .bubble-arrow {
+        left: 90%; /* Panah di ujung kanan balon menunjuk ke kasir */
+    }
+    .kasir {
+        height: 25vh;
+        max-height: 180px;
+    }
+    .game-header {
+        padding: 5px 15px; /* Perkecil header sedikit */
+    }
+    .header-center {
+        font-size: 1.1rem;
+        padding: 5px 15px;
+        margin-right: 12vw; /* Geser lebih jauh ke kiri di layar yang sangat pendek */
+    }
+}
+
+/* Jika tinggi layar sangat pendek (misal layar HP sangat sempit saat landscape),
+   kita akan otomatis mengecilkan (zoom-out) area tengah (dompet) dan kanan (kasir)
+   agar semua tombol penting (seperti "Serahkan Uang") tetap masuk ke dalam layar. */
+@media screen and (max-height: 420px) {
+    .area-tengah, .area-kanan {
+        transform: scale(0.85);
+        transform-origin: bottom center;
+    }
+    .area-kiri .placeholder-character, .placeholder-keranjang {
+        transform: scale(0.85);
+        transform-origin: bottom left;
+    }
+}
+
+@media screen and (max-height: 360px) {
+    .area-tengah, .area-kanan {
+        transform: scale(0.75);
+        transform-origin: bottom center;
+    }
+    .area-kiri .placeholder-character, .placeholder-keranjang {
+        transform: scale(0.75);
+        transform-origin: bottom left;
+    }
+}
+
+@media screen and (max-height: 300px) {
+    .area-tengah, .area-kanan {
+        transform: scale(0.65);
+        transform-origin: bottom center;
+    }
+    .area-kiri .placeholder-character, .placeholder-keranjang {
+        transform: scale(0.65);
+        transform-origin: bottom left;
+    }
+}
+
+/* Animasi Timer Kedip */
+@keyframes flashWarning {
+    0%, 100% { background: #E74C3C; transform: scale(1); }
+    50% { background: #C0392B; transform: scale(1.1); box-shadow: 0 0 15px rgba(231, 76, 60, 0.8); }
+}
+.timer.warning {
+    animation: flashWarning 1s infinite;
+}
+
+/* Animasi Partikel Cahaya Keranjang */
+@keyframes particleFly {
+    0% {
+        transform: translate(0, 0) rotate(153deg) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-100px, 50px) rotate(153deg) scale(1.2);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translate(-300px, 150px) rotate(153deg) scale(0.5);
+        opacity: 0;
+    }
+}
+
+.particle {
+    position: absolute;
+    width: 90px; /* Panjang ekor meteor */
+    height: 8px; /* Lebih tipis */
+    background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.5) 50%, #FFFFFF 100%);
+    border-radius: 20px;
+    pointer-events: none;
+    z-index: 100;
+    /* Efek pendaran (glow) di sekitar badan meteor */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(178, 235, 242, 0.6);
+    animation: particleFly 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+/* Kepala meteor yang terang dan tebal */
+.particle::after {
+    content: "";
+    position: absolute;
+    right: -2px; /* Di ujung kanan arah hadap */
+    top: -4px; /* Supaya berada di tengah vertikal (parent 8px, anak 16px, top -4px) */
+    width: 16px;
+    height: 16px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    box-shadow: 0 0 25px #FFFFFF, 0 0 40px #E0F7FA, 0 0 60px #FFFFFF;
+}
+
+@keyframes dropIntoBasket {
+    0% { transform: scale(0) translateY(-50px); opacity: 0; }
+    50% { transform: scale(1.2) translateY(10px); opacity: 1; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.keranjang-visual img.dropped {
+    animation: dropIntoBasket 0.5s ease-out forwards;
+}
+
+/* =========================================
+   8. LAYAR EVALUASI & PERENCANAAN
+   ========================================= */
+.evaluasi-section {
+    width: 100%;
+    height: 100vh;
+    background-color: #85C1E9;
+    /* Latar belakang ceria bergaya game dengan titik-titik dan gradasi bercahaya */
+    background-image: 
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.5) 0%, transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(255, 223, 0, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(255, 105, 180, 0.4) 0%, transparent 40%),
+        radial-gradient(rgba(255, 255, 255, 0.3) 3px, transparent 3px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 30px 30px;
+    background-position: 0 0, 0 0, 0 0, 15px 15px;
+    animation: colorfulBg 10s infinite alternate;
+    overflow-y: auto;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative; /* Untuk pseudo-elements dekorasi */
+}
+
+@keyframes colorfulBg {
+    0% { background-color: #85C1E9; } /* Biru Angkasa */
+    25% { background-color: #A2D9CE; } /* Hijau Mint */
+    50% { background-color: #F9E79F; } /* Kuning Cerah */
+    75% { background-color: #F5B7B1; } /* Merah Muda Lembut */
+    100% { background-color: #D2B4DE; } /* Ungu Ceria */
+}
+
+/* Dekorasi melayang di latar belakang */
+.evaluasi-section::before {
+    content: "⭐";
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    font-size: 60px;
+    opacity: 0.6;
+    animation: floatElement 3s infinite ease-in-out alternate;
+    z-index: 1;
+}
+
+.evaluasi-section::after {
+    content: "🎈";
+    position: absolute;
+    bottom: 20%;
+    right: 12%;
+    font-size: 80px;
+    opacity: 0.6;
+    animation: floatElement 4s infinite ease-in-out alternate-reverse;
+    z-index: 1;
+}
+
+@keyframes floatElement {
+    0% { transform: translateY(0) rotate(-10deg); }
+    100% { transform: translateY(-30px) rotate(10deg); }
+}
+
+.evaluasi-card {
+    width: 95vw;
+    max-width: 1200px;
+    min-height: 90vh;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.05), inset 0 0 0 5px rgba(255,255,255,0.8);
+    padding: 40px 50px;
+    border: 3px solid #F1C40F; /* Tambahan border emas layaknya kartu harta karun */
+    animation: slideUpFade 0.5s ease-out;
+    position: relative;
+    z-index: 5; /* Pastikan kartu di atas dekorasi */
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-close-evaluasi {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #E74C3C;
+    color: white;
+    border: 2px solid #C0392B;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.btn-close-evaluasi:hover {
+    transform: scale(1.1) rotate(90deg);
+    background: #C0392B;
+}
+
+.btn-close-evaluasi:active {
+    transform: scale(0.9);
+}
+
+@keyframes slideUpFade {
+    0% { transform: translateY(30px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.evaluasi-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo-wrapper {
+    display: inline-block;
+    padding: 10px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.logo-wrapper:hover {
+    transform: translateY(-5px);
+}
+
+.logo-wrapper img {
+    width: 120px;
+    border-radius: 12px;
+    display: block;
+}
+
+.evaluasi-header h1 {
+    color: #2C3E50;
+    margin: 0 0 10px 0;
+    font-size: 3.2rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+}
+
+.evaluasi-header p {
+    color: #7F8C8D;
+    font-size: 1.3rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Saldo Container */
+.evaluasi-saldo-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(145deg, #ffffff, #f0f3f5);
+    padding: 25px;
+    border-radius: 20px;
+    margin-bottom: 40px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.02), 0 5px 15px rgba(0,0,0,0.03);
+    border: 1px solid #e1e8ed;
+}
+
+.saldo-box {
+    flex: 1;
+    text-align: center;
+}
+
+.saldo-box p {
+    margin: 0 0 5px 0;
+    color: #95A5A6;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+.saldo-box h2 {
+    margin: 0;
+    color: #34495E;
+    font-size: 2.2rem;
+}
+
+.sisa-box h2 {
+    color: #27AE60; /* Hijau menyala */
+    text-shadow: 0 2px 10px rgba(39, 174, 96, 0.2);
+}
+
+.saldo-divider {
+    width: 2px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, #bdc3c7, transparent);
+    margin: 0 20px;
+}
+
+/* Tabel Daftar Pengeluaran */
+.evaluasi-table-title {
+    color: #2980B9;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    padding-left: 10px;
+    border-left: 5px solid #3498DB;
+}
+
+.evaluasi-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border: 1px solid #ecf0f1;
+}
+
+.evaluasi-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.evaluasi-table thead tr {
+    background: #3498DB;
+    color: white;
+}
+
+.evaluasi-table th {
+    padding: 15px;
+    text-align: left;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.evaluasi-row {
+    transition: background 0.2s;
+    border-bottom: 1px solid #f1f2f6;
+}
+
+.evaluasi-row:hover {
+    background: #f8f9fa;
+}
+
+.evaluasi-row:last-child {
+    border-bottom: none;
+}
+
+.evaluasi-row td {
+    padding: 15px;
+    vertical-align: middle;
+}
+
+.evaluasi-item-img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 10px;
+    padding: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border: 2px solid #ecf0f1;
+}
+
+.evaluasi-item-name {
+    font-weight: 800;
+    color: #2C3E50;
+    font-size: 1.4rem;
+}
+
+.evaluasi-item-price {
+    font-weight: 800;
+    color: #E67E22;
+    font-size: 1.4rem;
+}
+
+/* Form Perencanaan */
+.evaluasi-perencanaan {
+    background: linear-gradient(135deg, #FFF9C4 0%, #FFF59D 100%);
+    padding: 30px;
+    border-radius: 20px;
+    border-left: 8px solid #F1C40F;
+    box-shadow: 0 10px 20px rgba(241, 196, 15, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.evaluasi-perencanaan::after {
+    content: "💡";
+    position: absolute;
+    top: -20px;
+    right: -10px;
+    font-size: 100px;
+    opacity: 0.1;
+    transform: rotate(15deg);
+}
+
+.evaluasi-perencanaan h3 {
+    color: #D4AC0D;
+    margin-top: 0;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.evaluasi-perencanaan p {
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-size: 1.2rem;
+}
+
+#inputPerencanaan {
+    width: 100%;
+    padding: 18px;
+    border-radius: 15px;
+    border: 2px solid rgba(241, 196, 15, 0.5);
+    font-size: 1.05rem;
+    font-family: inherit;
+    resize: vertical;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.9);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+}
+
+#inputPerencanaan:focus {
+    outline: none;
+    border-color: #F39C12;
+    box-shadow: 0 0 10px rgba(243, 156, 18, 0.2);
+    background: #fff;
+}
+
+.btn-simpan-eval {
+    width: 100%;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%);
+    color: white;
+    border: none;
+    padding: 18px;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 8px 15px rgba(39, 174, 96, 0.3);
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-simpan-eval:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 20px rgba(39, 174, 96, 0.4);
+}
+
+.btn-simpan-eval:active {
+    transform: translateY(2px);
+    box-shadow: 0 4px 10px rgba(39, 174, 96, 0.2);
 }

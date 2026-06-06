@@ -172,6 +172,121 @@ window.updateLimitFoto = async function(limit) {
     }
 };
 
+// Pengaturan Cerita Kasus, Aturan, dan Kelompok
+window.getStorySettings = async function() {
+    try {
+        const docSnap = await settingsDoc.get();
+        if (docSnap.exists) {
+            const data = docSnap.data();
+            return {
+                kumpulanCerita: data.kumpulanCerita || ['Silakan bantu Andi memilih barang kebutuhan sekolahnya dengan uang Rp20.000.'],
+                aturan: data.aturan || '1. Pilih barang yang paling penting.\n2. Diskusikan dengan teman kelompokmu.\n3. Jangan lupa difoto dan diunggah!',
+                jumlahKelompok: data.jumlahKelompok || 1,
+                uangSakuAwal: data.uangSakuAwal || 20000,
+                alokasiCerita: data.alokasiCerita || {}
+            };
+        } else {
+            return {
+                kumpulanCerita: ['Silakan bantu Andi memilih barang kebutuhan sekolahnya dengan uang Rp20.000.'],
+                aturan: '1. Pilih barang yang paling penting.\n2. Diskusikan dengan teman kelompokmu.\n3. Jangan lupa difoto dan diunggah!',
+                jumlahKelompok: 1,
+                uangSakuAwal: 20000,
+                alokasiCerita: {}
+            };
+        }
+    } catch (e) {
+        console.error("Error getting story settings: ", e);
+        return { kumpulanCerita: [], aturan: '', jumlahKelompok: 1, alokasiCerita: {} };
+    }
+};
+
+window.listenToStorySettings = function(callback) {
+    return settingsDoc.onSnapshot((doc) => {
+        if (doc.exists) {
+            const data = doc.data();
+            callback({
+                kumpulanCerita: data.kumpulanCerita || [],
+                aturan: data.aturan || '',
+                jumlahKelompok: data.jumlahKelompok || 1,
+                uangSakuAwal: data.uangSakuAwal || 20000,
+                alokasiCerita: data.alokasiCerita || {}
+            });
+        }
+    });
+};
+
+window.updateStorySettings = async function(kumpulanCerita, aturan, jumlahKelompok) {
+    try {
+        // Simpan ke DB, reset alokasi cerita jika disave ulang
+        await settingsDoc.set({ 
+            kumpulanCerita: kumpulanCerita, 
+            aturan: aturan, 
+            jumlahKelompok: parseInt(jumlahKelompok) || 1,
+            alokasiCerita: {} 
+        }, { merge: true });
+    } catch (e) {
+        console.error("Error updating story settings: ", e);
+    }
+};
+
+window.drawRandomStory = async function(kelompokNumber) {
+    try {
+        return await db.runTransaction(async (transaction) => {
+            const doc = await transaction.get(settingsDoc);
+            if (!doc.exists) throw "Dokumen tidak ditemukan!";
+
+            const data = doc.data();
+            const alokasi = data.alokasiCerita || {};
+            const kumpulan = data.kumpulanCerita || [];
+
+            // Jika kelompok ini sudah memiliki cerita, berikan cerita tersebut
+            if (alokasi[kelompokNumber] !== undefined) {
+                return { cerita: kumpulan[alokasi[kelompokNumber]], baruSajaDiundi: false };
+            }
+
+            // Cari index cerita yang belum diambil kelompok mana pun
+            const assignedIndexes = Object.values(alokasi).map(x => parseInt(x, 10));
+            const availableIndexes = [];
+            for (let i = 0; i < kumpulan.length; i++) {
+                if (!assignedIndexes.includes(i)) {
+                    availableIndexes.push(i);
+                }
+            }
+
+            if (availableIndexes.length === 0) {
+                // Semua cerita habis (misal jumlah kelompok > jumlah cerita), berikan cerita acak
+                const fallbackIndex = Math.floor(Math.random() * kumpulan.length);
+                alokasi[kelompokNumber] = fallbackIndex;
+                transaction.update(settingsDoc, { alokasiCerita: alokasi });
+                return { cerita: kumpulan[fallbackIndex], baruSajaDiundi: true };
+            }
+
+            // Acak dari cerita yang masih tersedia
+            const randomIndex = availableIndexes[Math.floor(Math.random() * availableIndexes.length)];
+            alokasi[kelompokNumber] = randomIndex;
+            
+            // Simpan alokasi baru
+            transaction.update(settingsDoc, { alokasiCerita: alokasi });
+            return { cerita: kumpulan[randomIndex], baruSajaDiundi: true };
+        });
+    } catch (e) {
+        console.error("Gagal melakukan undian cerita: ", e);
+        return { cerita: "Maaf, gagal memuat cerita. Silakan coba lagi.", baruSajaDiundi: false };
+    }
+};
+
+window.resetStoryAllocation = async function() {
+    try {
+        await settingsDoc.update({
+            alokasiCerita: {}
+        });
+        return true;
+    } catch (e) {
+        console.error("Gagal mereset undian cerita: ", e);
+        return false;
+    }
+};
+
 // =========================================
 // 4. PEMANTAUAN SISWA AKTIF (PRESENCE LMS)
 // =========================================

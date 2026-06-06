@@ -8,34 +8,50 @@
     <link rel="stylesheet" href="shared/css/global.css">
     <style>
         /* Styling khusus halaman landing portal bergaya GAME */
+        html, body {
+            overscroll-behavior: none; /* Mencegah pantulan saat discroll mentok */
+        }
         body {
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 100vh;
+            background-color: #85C1E9; /* Warna langit jika belum terload */
+            margin: 0;
+            overflow-x: hidden;
+        }
+        
+        /* Background Pantai Utama */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
             height: 100vh;
-            /* Background Game-like Polkadot */
-            background-color: #F1C40F;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.4) 4px, transparent 4px),
-                              radial-gradient(rgba(255, 255, 255, 0.4) 4px, transparent 4px);
-            background-size: 50px 50px;
-            background-position: 0 0, 25px 25px;
-            overflow: hidden;
+            background-image: url('shared/assets/bg-pantai.png');
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            z-index: -2;
+            pointer-events: none;
         }
         .portal-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.85); /* Agak transparan agar nyatu */
+            backdrop-filter: blur(5px);
             padding: 50px 40px;
             border-radius: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             text-align: center;
             max-width: 500px;
             width: 90%;
-            border: 8px solid white;
+            border: 4px solid rgba(255, 255, 255, 0.6); /* Border lebih tipis dan transparan */
         }
         .portal-card h1 {
-            color: var(--primary-color);
+            color: #10c2e2;
             margin-bottom: 15px;
             font-size: 3.5rem;
-            text-shadow: 3px 3px 0px #FFE66D;
+            text-shadow: 2px 2px 0px #0b849b, 0 4px 10px rgba(0,0,0,0.1);
             animation: bounce 2s infinite ease-in-out;
         }
         @keyframes bounce {
@@ -47,47 +63,76 @@
             margin-bottom: 35px;
             font-size: 1.2rem;
             font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
         }
         .portal-options {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-        /* Tombol akses Siswa - bergaya 3D Game */
+        /* Tombol akses Siswa - warna pasir/emas */
         .btn-student {
-            background-color: var(--accent-color);
-            color: var(--text-dark);
+            background-color: #F4D03F; /* Kuning keemasan/pasir */
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
             font-size: 1.4rem;
             padding: 20px;
             border-radius: 30px;
-            box-shadow: 0 8px 0 #F39C12;
+            box-shadow: 0 8px 0 #D4AC0D;
             transition: all 0.1s;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
         .btn-student:active {
             transform: translateY(8px) scale(0.98);
-            box-shadow: 0 0 0 #F39C12;
+            box-shadow: 0 0 0 #D4AC0D;
         }
-        /* Tombol akses Guru - terlihat lebih profesional tapi tetap 3D */
+        /* Tombol akses Guru - warna biru laut dalam */
         .btn-teacher {
-            background-color: var(--primary-teacher);
+            background-color: #2980B9; /* Biru laut */
             color: white;
             font-family: var(--font-teacher);
             border-radius: 30px;
-            box-shadow: 0 6px 0 #1A252F;
+            box-shadow: 0 6px 0 #1A5276;
             transition: all 0.1s;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
         .btn-teacher:active {
             transform: translateY(6px) scale(0.98);
-            box-shadow: 0 0 0 #1A252F;
+            box-shadow: 0 0 0 #1A5276;
         }
 
         /* Penyesuaian Responsif untuk Mobile */
         @media (max-width: 768px) {
+            @keyframes floatMobileDecor {
+                0% { transform: translateY(0); }
+                50% { transform: translateY(-8px); }
+                100% { transform: translateY(0); }
+            }
+            body::after {
+                content: "";
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 15vh; /* Proporsional */
+                background-image: url('shared/assets/overlay-pantai.png');
+                background-size: 100% auto;
+                background-position: bottom center;
+                background-repeat: no-repeat;
+                z-index: 1;
+                pointer-events: none;
+                animation: floatMobileDecor 4s ease-in-out infinite;
+            }
             .portal-card {
-                padding: 30px 20px;
+                padding: 30px 15px;
             }
             .portal-card h1 {
-                font-size: 2.2rem;
+                font-size: 2rem;
+                white-space: nowrap;
             }
             .portal-card p {
                 font-size: 1rem;
@@ -104,7 +149,7 @@
         }
     </style>
 </head>
-<body>
+<body ontouchstart="">
    
     
     <div class="portal-card">
