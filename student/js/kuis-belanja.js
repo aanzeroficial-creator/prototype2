@@ -228,6 +228,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             currentCheckoutIndex = 0; // Mulai dari barang pertama
             modalRak.style.display = 'none'; // Tutup rak
             
+            // Pindah tombol Selesai Belanja ke header-left menggantikan Rak Toko khusus PC
+            if (btnBukaRak) btnBukaRak.style.display = 'none';
+            if (btnSelesaiBelanja && window.innerWidth > 600) {
+                const headerLeft = document.querySelector('.header-left');
+                if (headerLeft) headerLeft.appendChild(btnSelesaiBelanja);
+            }
+
+
             // Sembunyikan tombol Buka Rak jika game sudah dimulai
             btnBukaRak.style.display = 'none';
             
@@ -255,7 +263,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <img src="${imgSrc}" style="width:60px; height:60px; object-fit:contain; background:rgba(255,255,255,0.8); border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.2);">
             </div>
             Barang ke-${currentCheckoutIndex + 1} dari ${keranjangPilihan.length}:<br>
-            <strong>${currentItem.jumlah}x ${currentItem.nama}</strong> (@${formatRupiah(currentItem.harga)}/buah).<br>
+            <strong>${currentItem.jumlah}x ${currentItem.nama}</strong> (${formatRupiah(currentItem.harga)}/buah).<br>
             <strong>Berapa total yang harus kamu bayar untuk ini?</strong><br>
             Silakan susun uangnya di meja!
         `;
@@ -443,6 +451,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         timerDisplay.textContent = formatWaktu(sisaWaktu);
         
+        // Tambahkan penanda bahwa game sedang berjalan
+        document.body.classList.add('game-started');
+        
         timerInterval = setInterval(() => {
             if (isGameEnded) {
                 clearInterval(timerInterval);
@@ -466,6 +477,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     function akhiriGame() {
         if (isGameEnded) return;
         isGameEnded = true;
+        
+        // Matikan background music (BGM) saat masuk laporan misi
+        if (window.audios && window.audios.bgm) {
+            window.audios.bgm.pause();
+        }
         
         // Hentikan timer dan hapus efek
         if (timerInterval) clearInterval(timerInterval);

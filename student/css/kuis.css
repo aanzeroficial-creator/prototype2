@@ -35,7 +35,7 @@ body {
     align-items: center;
     background-color: rgba(44, 62, 80, 0.9); /* Biru gelap transparan */
     color: white;
-    padding: 15px 30px;
+    padding: 10px 20px; /* Perkecil padding bawaan agar tidak terlalu tebal */
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     z-index: 10;
 }
@@ -48,6 +48,13 @@ body {
     background: rgba(0,0,0,0.3);
     padding: 10px 25px;
     border-radius: 30px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
 }
 
 /* Pewarnaan teks informasi */
@@ -204,17 +211,19 @@ body {
     justify-content: center;
     gap: 15px;
     margin-bottom: 20px;
+    transform: translate(-50%, -50%) scale(1.35) !important; /* Di-scale up untuk tampilan PC yang dompetnya lebih besar */
 }
 
 /* Desain Dasar Uang sebagai Tombol */
 .uang-btn {
     cursor: pointer;
-    font-weight: bold;
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-    transition: transform 0.1s, box-shadow 0.1s, z-index 0.1s;
+    color: transparent !important;
+    text-shadow: none !important;
+    border: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    transition: transform 0.1s, z-index 0.1s;
     font-family: inherit;
-    border: 2px solid rgba(0,0,0,0.3);
 }
 
 /* Efek Animasi Saat Ditekan */
@@ -224,45 +233,63 @@ body {
 
 /* Spesifikasi Kertas (Bentuk Persegi Panjang Menyebar) */
 .kertas {
-    width: 110px;
-    height: 60px;
-    border-radius: 5px;
-    margin-left: -30px; 
-    transform-origin: bottom center; /* Titik tumpu putaran di bawah tengah */
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    position: absolute;
+    bottom: 0;
+    left: 40px; /* Mengkompensasi pergeseran poros agar titik kumpul tetap persis di tengah dompet */
+    width: 200px;
+    height: 95px;
+    transform-origin: -20% 50%; /* Poros ditarik keluar 40px dari sisi kiri uang agar pangkal kipas merenggang */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.4));
 }
 
 /* Efek saat mouse berada di atas uang (melayang) */
 .kertas:hover {
-    transform: translateY(-20px) scale(1.1) !important;
     z-index: 10;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.6));
+    /* transform scale diatur spesifik di masing-masing nominal agar tidak merusak rotasi */
 }
 
-/* Rotasi dan Warna Uang Kertas */
-.k-2k   { background-color: #7F8C8D; margin-left: 0; transform: rotate(-15deg); }
-.k-5k   { background-color: #D35400; transform: rotate(-8deg); }
-.k-10k  { background-color: #8E44AD; transform: rotate(-2deg); }
-.k-20k  { background-color: #27AE60; transform: rotate(4deg); }
-.k-50k  { background-color: #2980B9; transform: rotate(10deg); }
-.k-100k { background-color: #C0392B; transform: rotate(16deg); }
+/* Rotasi dan Gambar Uang Kertas (Ditegakkan -90deg lalu disebar super simetris dan lebar) */
+.k-1k   { background-image: url('../aset student/aset uang/1rb tampak depan.png'); transform: rotate(-127.5deg); }
+.k-1k:hover { transform: rotate(-127.5deg) scale(1.1) !important; }
+
+.k-5k   { background-image: url('../aset student/aset uang/5rb tampak depan.png'); transform: rotate(-112.5deg); }
+.k-5k:hover { transform: rotate(-112.5deg) scale(1.1) !important; }
+
+.k-10k  { background-image: url('../aset student/aset uang/10rb tampak depan.png'); transform: rotate(-97.5deg); }
+.k-10k:hover { transform: rotate(-97.5deg) scale(1.1) !important; }
+
+.k-20k  { background-image: url('../aset student/aset uang/20rb tampak depan.png'); transform: rotate(-82.5deg); }
+.k-20k:hover { transform: rotate(-82.5deg) scale(1.1) !important; }
+
+.k-50k  { background-image: url('../aset student/aset uang/50rb tampak depan.png'); transform: rotate(-67.5deg); }
+.k-50k:hover { transform: rotate(-67.5deg) scale(1.1) !important; }
+
+.k-100k { background-image: url('../aset student/aset uang/100 rb tampak depan.png'); transform: rotate(-52.5deg); }
+.k-100k:hover { transform: rotate(-52.5deg) scale(1.1) !important; }
 
 /* Spesifikasi Koin (Bentuk Lingkaran) */
 .koin {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    background: radial-gradient(circle, #F1C40F, #F39C12); /* Efek kilau koin emas */
-    color: #7E5109;
-    text-shadow: none;
-    border: 3px solid #D68910;
-    font-size: 1rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
 }
+
+.k-koin-100  { background-image: url('../aset student/aset uang/100 koin tampak depan (1).png'); background-size: 150% !important; }
+.k-koin-200  { background-image: url('../aset student/aset uang/200 koin tampak depan.png'); background-size: 150% !important; }
+.k-koin-500  { background-image: url('../aset student/aset uang/500 koin tampak depan.png'); }
+.k-koin-1000 { background-image: url('../aset student/aset uang/1rb koin tampak depan.png'); background-size: 150% !important; }
 
 .koin:hover {
     transform: scale(1.1);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.4);
+    filter: drop-shadow(0 8px 10px rgba(0,0,0,0.5));
 }
 
 /* Tombol Aksi Umum */
@@ -589,22 +616,22 @@ body {
         padding-bottom: 5px;
     }
     .dompet-container {
-        max-width: 260px !important; 
+        max-width: 290px !important;
         padding: 5px;
         border-width: 2px;
-        margin-bottom: 0 !important;
+        margin-bottom: -122px !important;
     }
     .dompet-container > img {
-        width: 220px !important;
+        width: 350px !important;
         max-width: 100% !important;
     }
     .uang-kertas-container {
-        transform: scale(0.7);
-        top: -15px !important;
+        transform: scale(0.9);
+        /* Hapus override top agar uang tetap tenggelam setengah di dalam dompet mengikuti settingan utama */
         margin-bottom: 0 !important;
     }
     .uang-koin-container {
-        transform: scale(0.85);
+        transform: translate(-50%, -50%) scale(1.1) !important;
         margin-bottom: 5px !important;
     }
     .reset-uang {
@@ -619,12 +646,26 @@ body {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-end !important; /* Dorong semua mentok ke bawah */
+        justify-content: flex-end !important;
+        position: relative !important;
+        margin-bottom: -25px !important;
     }
     .kasir {
         max-width: 140px !important; 
-        margin-bottom: -45px !important; /* Ditarik lebih jauh ke bawah agar badan terpotong meja */
+        margin-bottom: -45px !important; 
         z-index: 1;
+    }
+    
+    /* Turunkan seluruh kontainer kasir beserta balonnya ke belakang meja */
+    .area-kanan > div:first-child {
+        margin-bottom: -6px !important;
+        margin-left: 0 !important;
+        transition: margin-bottom 0.5s ease, margin-left 0.5s ease;
+    }
+    
+    body.game-started .area-kanan > div:first-child {
+        margin-bottom: -80px !important;
+        margin-left: -35px !important; /* Geser ke kiri agar tidak menutupi kalkulator */
     }
     .kasir img {
         max-width: 100% !important;
@@ -634,8 +675,8 @@ body {
     /* Targetkan elemen Meja Kasir langsung untuk membatalkan margin-bottom inline-nya */
     .area-kanan > div[style*="linear-gradient"] {
         margin-bottom: 0 !important;
-        border-radius: 8px 8px 0 0 !important; /* Bawah rata/siku agar nempel lantai */
-        padding-bottom: 35px !important; /* Tambah ruang bawah meja agar bisa diisi tombol */
+        width: 85% !important;
+        height: 175px !important;
     }
 
     /* Meja & Mesin Kasir */
@@ -650,14 +691,13 @@ body {
         padding: 5px !important;
         margin-bottom: 5px !important;
     }
-    .btn-bayar {
-        padding: 5px !important;
-        font-size: 0.75rem !important;
-        margin-top: -35px !important; /* Tarik tombol naik ke atas meja kasir */
-        margin-bottom: 5px !important;
-        position: relative;
-        z-index: 10 !important;
-        width: 90% !important; /* Agar tidak kepanjangan */
+    .btn-bayar, #btnBayar {
+        padding: 8px !important;
+        font-size: 0.9rem !important;
+        position: absolute !important;
+        bottom: 35px !important;
+        width: 85% !important;
+        z-index: 10;
     }
     .speech-bubble {
         padding: 6px 10px !important;
@@ -665,6 +705,9 @@ body {
         margin-bottom: -5px !important; 
         max-width: 180px;
         text-align: center;
+        position: relative !important;
+        top: 25px !important;
+        z-index: 15 !important; /* Pastikan selalu berada di atas karakter kasir yang membesar */
     }
 }
 
@@ -675,21 +718,8 @@ body {
     
     .dompet-container { padding: 10px; }
     
-    .kertas {
-        width: 65px;
-        height: 40px;
-        margin-left: -20px;
-    }
-    .k-2k { margin-left: 0; }
-    
-    .uang-kertas-container { gap: -20px; height: 50px; margin-bottom: 15px; }
-    .uang-koin-container { gap: 8px; margin-bottom: 10px; }
-    
-    .koin {
-        width: 45px;
-        height: 45px;
-        font-size: 0.8rem;
-    }
+    /* Uang dikembalikan ke bentuk kipas sama persis seperti PC, 
+       hanya ukurannya yang di-scale mengecil otomatis oleh container-nya */
     
     .mesin-kasir {
         width: 100%;
@@ -727,7 +757,11 @@ body {
     }
     
     .header-center {
-        margin-right: 8vw; /* Geser panel waktu & uang saku ke kiri */
+        gap: 10px;
+        font-size: 0.8rem;
+        padding: 5px 10px;
+        white-space: nowrap;
+        margin-right: 0 !important; /* Hapus margin agar tidak menekan tombol kanan */
     }
 }
 
@@ -739,6 +773,7 @@ body {
         font-size: 0.85rem;
         margin-bottom: -15px; 
         right: 120px; /* Geser lebih jauh ke kiri agar wajah kasir bebas sepenuhnya */
+    }
     }
     .bubble-arrow {
         left: 90%; /* Panah di ujung kanan balon menunjuk ke kasir */
@@ -753,7 +788,7 @@ body {
     .header-center {
         font-size: 1.1rem;
         padding: 5px 15px;
-        margin-right: 12vw; /* Geser lebih jauh ke kiri di layar yang sangat pendek */
+        margin-right: 0 !important; /* Hapus margin penekan */
     }
 }
 

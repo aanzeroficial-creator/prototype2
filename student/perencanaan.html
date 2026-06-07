@@ -162,7 +162,12 @@
                             <option value="keinginan">Keinginan (Hanya pengen saja)</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-student" style="width:100%;">Tambah ke Daftar ➕</button>
+                    <!-- BARU: Alasan Pengeluaran -->
+                    <div class="form-group">
+                        <label style="font-weight: 600;">Apa alasannya mau beli ini?</label>
+                        <input type="text" id="alasanPengeluaran" class="form-control" placeholder="Tulis alasannya di sini..." required>
+                    </div>
+                    <button type="submit" class="btn btn-student" style="width:100%;">Tambah ke Daftar 🛒</button>
                 </form>
             </div>
 
@@ -194,6 +199,12 @@
                     <h3>Sisa Uang Untuk Ditabung:</h3>
                     <div class="amount" id="displaySisaUang">Rp 0</div>
                     <p id="pesanMotivasi" style="font-weight: 500;">Ayo, masukkan data uang jajanmu dulu!</p>
+                </div>
+
+                <!-- BARU: Rencana Sisa Uang -->
+                <div class="form-group" style="margin-top: 25px;">
+                    <label style="font-weight: 600;">Sisa uang rencananya mau buat apa?</label>
+                    <textarea id="rencanaSisaUang" class="form-control" rows="3" placeholder="Contoh: Sisa uang mau saya tabung untuk beli buku..." required></textarea>
                 </div>
             </div>
         </div>

@@ -349,6 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const planTableBody = document.getElementById('planTableBody');
     
     let currentActiveTab = null;
+    let previousEvalCount = 0; // Untuk mendeteksi adanya data baru
 
     function renderEvaluasiSiswa(results) {
         if (!studentTabsContainer || !studentTabContentContainer || !planTableBody || !results) return;
@@ -357,6 +358,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const evalResults = results.filter(r => r.aktivitas !== "Perencanaan Keuangan");
         const planResults = results.filter(r => r.aktivitas === "Perencanaan Keuangan");
+        
+        // Deteksi jika ada data evaluasi baru masuk secara realtime
+        if (evalResults.length > previousEvalCount) {
+            // Karena orderBy('timestamp', 'desc'), data terbaru ada di index 0
+            if (evalResults[0]) {
+                currentActiveTab = evalResults[0].nama;
+            }
+        }
+        previousEvalCount = evalResults.length;
         
         // 1. Tampilkan Evaluasi Kuis (Tab System)
         if (evalResults.length === 0) {
@@ -457,7 +467,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if(parts.length >= 3) {
                         uangSaku = parts[0].replace('<strong>Uang Saku:</strong>', '').trim();
                         status = parts[1].replace('<strong>Status:</strong>', '').trim();
-                        rincian = parts[2].replace('<strong>Rincian Jajan:</strong>', '').trim();
+                        // Gabungkan sisa potongan karena rincian jajan dan rencana sisa uang mengandung banyak <br>
+                        rincian = parts.slice(2).join('<br>').replace('<strong>Rincian Jajan:</strong>', '').trim();
                     }
                 }
                 

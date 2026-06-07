@@ -66,11 +66,11 @@
             <button id="btnBukaRak" style="margin-left:15px; background:#F1C40F; color:#B7950B; border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor:pointer; font-size:1rem; box-shadow:0 2px 4px rgba(0,0,0,0.2);">🏪 Pergi ke Rak Toko</button>
         </div>
         <div class="header-center">
-            <div class="score" style="background:#27AE60; color:white;">💰 Sisa Uang Saku: <span id="budgetDisplay">Memuat...</span></div>
-            <div class="timer" id="timerDisplay" style="background:#E74C3C; color:white; font-weight:bold; padding:10px 20px; border-radius:30px; font-size:1.2rem; display:flex; align-items:center; gap:5px; box-shadow:0 4px 6px rgba(0,0,0,0.2);">⏱️ 02:00</div>
+            <div class="score" style="background:#27AE60; color:white; border-radius:30px; padding:5px 15px; display:flex; align-items:center; justify-content:center; font-size:1rem; font-weight:bold; box-shadow:0 4px 6px rgba(0,0,0,0.2); white-space:nowrap; flex-shrink:0;">Sisa Uang Saku: <span id="budgetDisplay" style="margin-left: 5px;">Memuat...</span></div>
+            <div class="timer" id="timerDisplay" style="background:#E74C3C; color:white; font-weight:bold; padding:5px 15px; border-radius:30px; font-size:1rem; display:flex; align-items:center; gap:5px; box-shadow:0 4px 6px rgba(0,0,0,0.2); white-space:nowrap; flex-shrink:0;">⏱️ 02:00</div>
         </div>
         <div class="header-right">
-            <button id="btnSelesaiBelanja" class="btn-action" style="background:#3498DB; border-color:#2980B9; color:white;">✅ Selesai Belanja</button>
+            <button id="btnSelesaiBelanja" class="btn-action" style="background:#3498DB; border-color:#2980B9; color:white; padding:8px 15px; font-size:1rem; border-radius:20px; font-weight:bold; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.2);">✅ Selesai Belanja</button>
         </div>
     </header>
 
@@ -103,11 +103,11 @@
             <div class="dompet-container" style="background: transparent; border: none; box-shadow: none; padding: 0; position: relative; display: inline-block;">
                 
                 <!-- Gambar Aset Dompet (Base) -->
-                <img src="aset%20student/dompet.png" alt="Dompet" style="width: 35vw; max-width: 400px; display: block; position: relative; z-index: 2;">
+                <img src="aset student/dompet.png" alt="Dompet" style="width: 35vw; max-width: 400px; display: block; position: relative; z-index: 2; pointer-events: none;">
 
-                <!-- Deretan Uang Kertas (Menyebar seperti kipas) - DI DEPAN DOMPET -->
-                <div class="uang-kertas-container" style="position: absolute; top: 5%; left: 50%; transform: translateX(-50%); z-index: 3; margin: 0; width: 100%;">
-                    <button class="uang-btn kertas k-2k" data-nominal="2000">2.000</button>
+                <!-- Deretan Uang Kertas (Mekar ke Atas dari Tengah Dompet) -->
+                <div class="uang-kertas-container" style="position: absolute; top: 35%; left: 43%; z-index: 1;">
+                    <button class="uang-btn kertas k-1k" data-nominal="1000">1.000</button>
                     <button class="uang-btn kertas k-5k" data-nominal="5000">5.000</button>
                     <button class="uang-btn kertas k-10k" data-nominal="10000">10.000</button>
                     <button class="uang-btn kertas k-20k" data-nominal="20000">20.000</button>
@@ -115,12 +115,12 @@
                     <button class="uang-btn kertas k-100k" data-nominal="100000">100.000</button>
                 </div>
 
-                <!-- Deretan Uang Koin (Jejeran bawah) - DI DEPAN DOMPET -->
-                <div class="uang-koin-container" style="position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); z-index: 3; margin: 0; width: 100%;">
-                    <button class="uang-btn koin" data-nominal="100">100</button>
-                    <button class="uang-btn koin" data-nominal="200">200</button>
-                    <button class="uang-btn koin" data-nominal="500">500</button>
-                    <button class="uang-btn koin" data-nominal="1000">1.000</button>
+                <!-- Deretan Uang Koin (Jejeran Menempel di Tengah Badan Dompet) -->
+                <div class="uang-koin-container" style="position: absolute; top: 58%; left: 45%; transform: translate(-50%, -50%); z-index: 3; margin: 0; width: 100%; display: flex; justify-content: center; align-items: center;">
+                    <button class="uang-btn koin k-koin-100" data-nominal="100" style="width: 100px !important; height: 100px !important; flex-shrink: 0; margin-right: -35px !important;">100</button>
+                    <button class="uang-btn koin k-koin-200" data-nominal="200" style="width: 100px !important; height: 100px !important; flex-shrink: 0;">200</button>
+                    <button class="uang-btn koin k-koin-500" data-nominal="500" style="width: 100px !important; height: 100px !important; flex-shrink: 0; margin-left: -35px !important;">500</button>
+                    <button class="uang-btn koin k-koin-1000" data-nominal="1000" style="width: 100px !important; height: 100px !important; flex-shrink: 0; margin-left: -35px !important;">1.000</button>
                 </div>
             </div>
             
@@ -138,7 +138,7 @@
             </div>
             
             <!-- Karakter Kasir dan Barang yang Dipilih -->
-            <div style="position:relative; display:flex; flex-direction:column; align-items:center; width:100%;">
+            <div style="position:relative; display:flex; flex-direction:column; align-items:center; width:85%;">
                 <!-- Karakter Kasir -->
                 <div class="placeholder-character kasir" style="background: transparent; box-shadow: none;">
                 <!-- Menggunakan 8.png karena 11.png tidak ada di direktori -->
@@ -146,7 +146,7 @@
             </div>
             
             <!-- Meja Kasir Berwarna Coklat -->
-            <div style="width: 120%; height: 200%; background: linear-gradient(to bottom, #A0522D, #8B4513); border-top: 8px solid #CD853F; border-radius: 8px 8px 0 0; padding-top: 15px; padding-bottom: 20px; display: flex; justify-content: center; position: relative; z-index: 2; box-shadow: 0 -5px 15px rgba(0,0,0,0.3); margin-bottom: 20px;">
+            <div style="width: 120%; height: 200px; background: linear-gradient(to bottom, #A0522D, #8B4513); border-top: 8px solid #CD853F; border-radius: 8px 8px 0 0; padding-top: 15px; padding-bottom: 20px; display: flex; justify-content: center; position: relative; z-index: 2; box-shadow: 0 -5px 15px rgba(0,0,0,0.3); margin-bottom: 20px;">
                 
                 <!-- Mesin Kasir (Di atas meja) -->
                 <div class="placeholder-mesin" style="background: #BDC3C7; border: 4px solid #7F8C8D; border-radius: 10px; padding: 10px; width: 120px; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; box-shadow: 0 5px 15px rgba(0,0,0,0.4); margin-top: -50px; z-index: 3;">

@@ -17,13 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const namaPengeluaran = document.getElementById('namaPengeluaran');
     const hargaPengeluaran = document.getElementById('hargaPengeluaran');
     const kategoriPengeluaran = document.getElementById('kategoriPengeluaran');
+    const alasanPengeluaran = document.getElementById('alasanPengeluaran'); // DOM Baru
 
-    // Mengambil Elemen DOM (Output/Tampilan Angka)
+    // Mengambil Elemen DOM (Output/Tampilan Angka & Deskripsi)
     const displayUangJajan = document.getElementById('displayUangJajan');
     const displayTotalPengeluaran = document.getElementById('displayTotalPengeluaran');
     const displaySisaUang = document.getElementById('displaySisaUang');
     const expenseList = document.getElementById('expenseList');
     const pesanMotivasi = document.getElementById('pesanMotivasi');
+    const rencanaSisaUang = document.getElementById('rencanaSisaUang'); // DOM Baru
 
     /* ==========================================
        1. EVENT LISTENER (Merespon interaksi user)
@@ -46,9 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const nama = namaPengeluaran.value;
         const harga = parseInt(hargaPengeluaran.value);
         const kategori = kategoriPengeluaran.value;
+        const alasan = alasanPengeluaran.value;
 
         // Validasi ganda (meski di HTML sudah ada 'required')
-        if (nama && !isNaN(harga) && harga > 0 && kategori) {
+        if (nama && !isNaN(harga) && harga > 0 && kategori && alasan) {
             // Mainkan suara cash register saat menambah barang
             const sfxAdd = new Audio('../klik semua.mp3');
             sfxAdd.play().catch(err => {});
@@ -58,13 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 id: Date.now(), // Gunakan waktu saat ini sebagai ID unik (untuk fitur hapus)
                 nama: nama,
                 harga: harga,
-                kategori: kategori
+                kategori: kategori,
+                alasan: alasan
             });
 
             // Kosongkan form input agar siap dipakai untuk barang berikutnya
             namaPengeluaran.value = '';
             hargaPengeluaran.value = '';
             kategoriPengeluaran.value = '';
+            alasanPengeluaran.value = '';
             
             // Perbarui perhitungan dan tampilan di layar
             updateUI();
@@ -163,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <strong>${item.nama}</strong><br>
                     <span style="${badgeClass} color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.75rem; margin-right: 10px;">${kategoriText}</span>
                     <span style="color: var(--danger); font-size: 0.95rem; font-weight: bold;">${formatRupiah(item.harga)}</span>
+                    <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #555;"><i>Alasan: ${item.alasan}</i></p>
                 </div>
                 <!-- Simpan ID unik item di dalam atribut data-id agar mudah ditemukan saat mau dihapus -->
                 <button class="btn-delete" data-id="${item.id}">Hapus</button>
@@ -204,6 +210,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert("Isi dulu uang saku kamu!");
                 return;
             }
+            if (rencanaSisaUang && rencanaSisaUang.value.trim() === '') {
+                alert("Silakan tulis dulu rencana untuk sisa uangmu!");
+                return;
+            }
 
             const authData = sessionStorage.getItem('siswaAuth');
             if (authData && typeof saveStudentResult === "function") {
@@ -217,9 +227,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 let rincianBarang = "<ul style='margin:5px 0; padding-left:20px; font-size:0.9rem;'>";
                 daftarPengeluaran.forEach(item => {
                     const labelKat = item.kategori === 'kebutuhan' ? 'Kebutuhan' : 'Keinginan';
-                    rincianBarang += `<li>${item.nama} <i>(${labelKat})</i> : <b>${formatRupiah(item.harga)}</b></li>`;
+                    rincianBarang += `<li>${item.nama} <i>(${labelKat})</i> : <b>${formatRupiah(item.harga)}</b><br><small>Alasan: ${item.alasan}</small></li>`;
                 });
                 rincianBarang += "</ul>";
+                
+                const catatanTambahan = `<br><strong>Rencana Sisa Uang:</strong> ${rencanaSisaUang ? rencanaSisaUang.value : '-'}`;
                 
                 const oldText = btnKirimLaporan.textContent;
                 btnKirimLaporan.textContent = "Mengirim...";
@@ -231,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         kelas: siswa.kelas,
                         aktivitas: "Perencanaan Keuangan",
                         skorAkhir: formatRupiah(totalPengeluaran), 
-                        catatan: `<strong>Uang Saku:</strong> ${formatRupiah(uangJajan)} <br> <strong>Status:</strong> ${status} <br> <strong>Rincian Jajan:</strong>${rincianBarang}`
+                        catatan: `<strong>Uang Saku:</strong> ${formatRupiah(uangJajan)} <br> <strong>Status:</strong> ${status} <br> <strong>Rincian Jajan:</strong>${rincianBarang} ${catatanTambahan}`
                     });
 
                     const sfxSave = new Audio('../benar.mp3');

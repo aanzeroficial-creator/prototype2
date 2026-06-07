@@ -6,75 +6,67 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Array berisi data bermacam-macam pecahan uang Rupiah
+    // Array berisi data bermacam-macam pecahan uang Rupiah beserta gambarnya
     const moneyData = [
         {
-            nominal: 1000,
-            warna: "Kuning/Kehijauan",
-            tokoh: "Tjut Meutia",
-            ciri: "Uang kertas seribu rupiah biasanya berwarna dominan kuning atau kehijauan."
-        },
-        {
-            nominal: 2000,
-            warna: "Abu-abu",
-            tokoh: "Mohammad Husni Thamrin",
-            ciri: "Uang dua ribu rupiah didominasi warna abu-abu."
-        },
-        {
-            nominal: 5000,
-            warna: "Cokelat",
-            tokoh: "Dr. K.H. Idham Chalid",
-            ciri: "Uang lima ribu rupiah mudah dikenali dari warna cokelatnya."
-        },
-        {
-            nominal: 10000,
-            warna: "Ungu",
-            tokoh: "Frans Kaisiepo",
-            ciri: "Uang sepuluh ribu rupiah identik dengan warna ungu."
-        },
-        {
-            nominal: 20000,
-            warna: "Hijau",
-            tokoh: "Dr. G.S.S.J. Ratulangi",
-            ciri: "Uang dua puluh ribu rupiah berwarna hijau terang."
+            nominal: 100000,
+            gambarDepan: "100 rb tampak depan.png",
+            gambarBelakang: "100rb belakang.png",
+            ciri: "Uang Rp100.000 berwarna merah dengan tokoh Soekarno & Mohammad Hatta."
         },
         {
             nominal: 50000,
-            warna: "Biru",
-            tokoh: "Ir. H. Djuanda Kartawidjaja",
-            ciri: "Uang lima puluh ribu rupiah didominasi warna biru."
+            gambarDepan: "50rb tampak depan.png",
+            gambarBelakang: "50rb tampak belakang.png",
+            ciri: "Uang Rp50.000 didominasi warna biru dengan tokoh Ir. H. Djuanda Kartawidjaja."
         },
         {
-            nominal: 100000,
-            warna: "Merah",
-            tokoh: "Soekarno & Mohammad Hatta",
-            ciri: "Uang seratus ribu rupiah adalah pecahan terbesar dan berwarna merah."
+            nominal: 20000,
+            gambarDepan: "20rb tampak depan.png",
+            gambarBelakang: "20rb tampak belakang.png",
+            ciri: "Uang Rp20.000 berwarna hijau terang dengan tokoh Dr. G.S.S.J. Ratulangi."
         },
         {
-            nominal: 100,
-            warna: "Merah",
-            tokoh: "Soekarno & Mohammad Hatta",
-            ciri: "Uang seratus ribu rupiah adalah pecahan terbesar dan berwarna merah."
+            nominal: 10000,
+            gambarDepan: "10rb tampak depan.png",
+            gambarBelakang: "10rb tampak belakang.png",
+            ciri: "Uang Rp10.000 identik dengan warna ungu dengan tokoh Frans Kaisiepo."
+        },
+        {
+            nominal: 5000,
+            gambarDepan: "5rb tampak depan.png",
+            gambarBelakang: "5rb tampak belakang.png",
+            ciri: "Uang Rp5.000 berwarna cokelat dengan tokoh Dr. K.H. Idham Chalid."
+        },
+        {
+            nominal: 1000,
+            gambarDepan: "1rb tampak depan.png",
+            gambarBelakang: "1rb tampak belakang.png",
+            ciri: "Uang kertas Rp1.000 berwarna dominan kuning/kehijauan dengan tokoh Tjut Meutia."
+        },
+        {
+            nominal: 1000,
+            gambarDepan: "1rb koin tampak depan.png",
+            gambarBelakang: "1rb koin tampak belakang.png",
+            ciri: "Uang koin Rp1.000 berbahan perak mengilap."
+        },
+        {
+            nominal: 500,
+            gambarDepan: "500 koin tampak depan.png",
+            gambarBelakang: "500 koin tampak belakang.png",
+            ciri: "Uang koin Rp500 berbahan aluminium/kuningan."
         },
         {
             nominal: 200,
-            warna: "Merah",
-            tokoh: "Soekarno & Mohammad Hatta",
-            ciri: "Uang seratus ribu rupiah adalah pecahan terbesar dan berwarna merah."
+            gambarDepan: "200 koin tampak depan.png",
+            gambarBelakang: "200 koin tampak belakang.png",
+            ciri: "Uang koin Rp200 yang berukuran kecil."
         },
-
         {
-            nominal: 500,
-            warna: "Merah",
-            tokoh: "Soekarno & Mohammad Hatta",
-            ciri: "Uang seratus ribu rupiah adalah pecahan terbesar dan berwarna merah."
-        },
-
-        {
-            nominal: 1000,
-            warna: "Merah",
-            tokoh: "Soekarno & Mohammad Hatta",
-            ciri: "Uang seratus ribu rupiah adalah pecahan terbesar dan berwarna merah."
+            nominal: 100,
+            gambarDepan: "100 koin tampak depan (1).png",
+            gambarBelakang: "100 koin tampak belakang.png",
+            ciri: "Uang koin Rp100 berbahan aluminium/kuningan."
         }
     ];
 
@@ -87,19 +79,16 @@ document.addEventListener('DOMContentLoaded', () => {
         card.className = 'flip-card'; // Memberikan class CSS untuk efek 3D
         
         // Memasukkan struktur HTML ke dalam kartu
-        // Bagian Depan (Nominal) dan Bagian Belakang (Penjelasan/Ciri)
         card.innerHTML = `
             <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <div class="money-icon">💰</div>
-                    <!-- Menggunakan fungsi formatRupiah dari utils.js -->
-                    <h3>${formatRupiah(item.nominal)}</h3> 
+                <div class="flip-card-front" style="display:flex; flex-direction:column; justify-content:center; align-items:center; padding:10px; gap: 10px;">
+                    <img src="aset student/aset uang/${item.gambarDepan}" alt="Rp ${item.nominal} Depan" style="max-width: 100%; max-height: 100px; object-fit: contain; border-radius: 8px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));">
+                    <img src="aset student/aset uang/${item.gambarBelakang}" alt="Rp ${item.nominal} Belakang" style="max-width: 100%; max-height: 100px; object-fit: contain; border-radius: 8px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));">
+                    <h3 style="margin-top: 5px; font-size: 1.5rem; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">${formatRupiah(item.nominal)}</h3> 
                 </div>
-                <div class="flip-card-back">
-                    <h3>${formatRupiah(item.nominal)}</h3>
-                    <p><strong>Tokoh Pahlawan:</strong><br>${item.tokoh}</p>
-                    <p style="margin-top:10px;"><strong>Warna Dominan:</strong><br>${item.warna}</p>
-                    <p style="margin-top:10px; font-size: 0.95rem;">${item.ciri}</p>
+                <div class="flip-card-back" style="display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px;">
+                    <h3 style="margin-bottom: 15px; border-bottom: 2px solid rgba(255,255,255,0.4); padding-bottom: 10px; font-size: 2rem;">${formatRupiah(item.nominal)}</h3>
+                    <p style="font-size: 1.1rem; line-height:1.5;">${item.ciri}</p>
                 </div>
             </div>
         `;
@@ -110,8 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const sfxFlip = new Audio('../klik semua.mp3');
             sfxFlip.play().catch(e => {});
 
-            // classList.toggle akan menambah class 'flipped' jika belum ada, 
-            // dan menghapusnya jika sudah ada. Ini memicu animasi CSS.
             card.classList.toggle('flipped');
         });
 
